@@ -11,6 +11,7 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
         while(true) {
+            System.out.println("\n------ 변경점 ------");
             System.out.println("\n------ KOSA 도서 관리 시스템 ------");
             System.out.println("[1] 로그인");
             System.out.println("[2] 회원가입");
