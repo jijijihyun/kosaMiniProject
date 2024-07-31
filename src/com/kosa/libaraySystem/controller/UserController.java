@@ -50,13 +50,13 @@ public class UserController {
 
             switch(choice) {
                 case 1 :
-//                    new BookController().searchBooks();
+                    new BookController().searchBooks();
                     break;
                 case 2 :
-//                    new LoanController().viewLoanRecords();
+                    new LoanController().viewLoanRecords();
                     break;
                 case 3 :
-//                    new ReviewController().writeReview();
+                    new ReviewController().writeReview();
                     break;
                 case 4 :
 
@@ -130,5 +130,8 @@ public class UserController {
     // 이메일 유효성 검사(정규 표현식 사용)
     private boolean isValidEmail(String email) {
         return Pattern.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", email);
+    }
+
+    public void manageUsers() {
     }
 }

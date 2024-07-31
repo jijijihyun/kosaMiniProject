@@ -19,13 +19,13 @@ public class AdminController {
 
             switch(choice) {
                 case 1 :
-//                    new UserController().manageUsers();
+                    new UserController().manageUsers();
                     break;
                 case 2 :
-//                    new BookController().manageBooks();
+                    new BookController().manageBooks();
                     break;
                 case 3 :
-//                    new CategoryController().manageCategories();
+                    new CategoryController().manageCategories();
                     break;
                 case 4 :
                     System.out.println("로그아웃 되었습니다.");
