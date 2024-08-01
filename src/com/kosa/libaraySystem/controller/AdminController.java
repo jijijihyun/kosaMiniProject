@@ -11,7 +11,9 @@ public class AdminController {
             System.out.println("[1] 사용자 관리");
             System.out.println("[2] 도서 관리");
             System.out.println("[3] 카테고리 관리");
-            System.out.println("[4] 로그아웃");
+            System.out.println("[4] 작가 관리");
+            System.out.println("[5] 출핀사 관리");
+            System.out.println("[6] 로그아웃");
             System.out.print(">> ");
 
             int choice = scanner.nextInt();

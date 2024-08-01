@@ -11,11 +11,11 @@ import lombok.*;
 public class Book {
 
     private int bookNo;
-    private String bookTitle;
-    private String bookAuthor;
-    private String bookPublisher;
-    private String bookCategory;
-    private boolean Status;
+    private String title;
+    private int authorNo;
+    private int publisherNo;
+    private int categoryNo;
+    private String status;
 
     public int getBookNo() {
         return bookNo;
@@ -25,44 +25,44 @@ public class Book {
         this.bookNo = bookNo;
     }
 
-    public String getBookTitle() {
-        return bookTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setBookTitle(String bookTitle) {
-        this.bookTitle = bookTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getBookAuthor() {
-        return bookAuthor;
+    public int getAuthorNo() {
+        return authorNo;
     }
 
-    public void setBookAuthor(String bookAuthor) {
-        this.bookAuthor = bookAuthor;
+    public void setAuthorNo(int authorNo) {
+        this.authorNo = authorNo;
     }
 
-    public String getBookPublisher() {
-        return bookPublisher;
+    public int getPublisherNo() {
+        return publisherNo;
     }
 
-    public void setBookPublisher(String bookPublisher) {
-        this.bookPublisher = bookPublisher;
+    public void setPublisherNo(int publisherNo) {
+        this.publisherNo = publisherNo;
     }
 
-    public String getBookCategory() {
-        return bookCategory;
+    public int getCategoryNo() {
+        return categoryNo;
     }
 
-    public void setBookCategory(String bookCategory) {
-        this.bookCategory = bookCategory;
+    public void setCategoryNo(int categoryNo) {
+        this.categoryNo = categoryNo;
     }
 
-    public boolean isStatus() {
-        return Status;
+    public String getStatus() {
+        return status;
     }
 
-    public void setStatus(boolean status) {
-        Status = status;
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
 

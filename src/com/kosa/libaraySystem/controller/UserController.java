@@ -27,14 +27,14 @@ public class UserController {
                 new AdminController().showAdminMenu();
             } else {
                 // 사용자 메뉴
-                new UserController().showUserMenu();
+                new UserController().showUserMenu(user);
             }
         } else {
             System.out.println("로그인 실패!!! 사용자 ID 또는 비밀번호가 잘못되었습니다.");
         }
     }
 
-    public void showUserMenu() {
+    public void showUserMenu(User user) throws SQLException {
         while(true) {
             System.out.println("\n------     사용자 메뉴     ------");
             System.out.println("[1] 도서 검색");
@@ -50,13 +50,13 @@ public class UserController {
 
             switch(choice) {
                 case 1 :
-                    new BookController().searchBooks();
+                    new BookController().userSearchBook(user);
                     break;
                 case 2 :
                     new LoanController().viewLoanRecords();
                     break;
                 case 3 :
-                    new ReviewController().writeReview();
+                    new ReviewController().reviewControl(user);
                     break;
                 case 4 :
 
