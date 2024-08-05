@@ -12,7 +12,7 @@ import java.util.List;
 
 public class CategoryDAO {
     public String getCategoryNameByNumSelect(int CategoryNum){
-        String sql = "Select c.name from categories c where c.categoryNum = ?";
+        String sql = "Select c.name from categories c where c.categoryNo = ?";
 
         try(Connection conn = DBUtils.getConnection();
             PreparedStatement preStat = conn.prepareStatement(sql)

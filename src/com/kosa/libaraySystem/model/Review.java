@@ -1,11 +1,13 @@
 package com.kosa.libaraySystem.model;
 
+import java.sql.Date;
+
 public class Review {
     int reviewNo;
     int bookNo;
     int userNo;
     String reviewText;
-    String reviewDate;
+    Date reviewDate;
 
     public int getReviewNo() {
         return reviewNo;
@@ -39,18 +41,18 @@ public class Review {
         this.reviewText = reviewText;
     }
 
-    public String getReviewDate() {
+    public Date getReviewDate() {
         return reviewDate;
     }
 
-    public void setReviewDate(String reviewDate) {
+    public void setReviewDate(Date reviewDate) {
         this.reviewDate = reviewDate;
     }
 
     public Review() {
     }
 
-    public Review(int reviewNo, int bookNo, int userNo, String reviewText, String reviewDate) {
+    public Review(int reviewNo, int bookNo, int userNo, String reviewText, Date reviewDate) {
         this.reviewNo = reviewNo;
         this.bookNo = bookNo;
         this.userNo = userNo;

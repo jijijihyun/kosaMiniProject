@@ -1,5 +1,7 @@
 package com.kosa.libaraySystem.model;
 
+import java.util.List;
+
 public class BookGrouped {
     private Book book;
     private int cnt;
@@ -54,5 +56,21 @@ public class BookGrouped {
 
     public void setPublisherName(String publisherName) {
         this.publisherName = publisherName;
+    }
+
+    //문자열 길이 포맷팅
+    private String formatString(String str, int maxLength) {
+        return str.length() > maxLength ? str.substring(0, maxLength - 3) + "..." : str;
+    }
+
+    //단순 반복코드 도서 출력부로직만 따로
+    public void showBookGroupedInfoUser(){
+        System.out.printf("%-40s  %-10s  %-15s  %-10s  %3d\n",
+                this.getBookTitle(),
+                formatString(this.getAuthorName(), 10),
+                formatString(this.getCategoryName(), 15),
+                formatString(this.getPublisherName(), 10),
+                this.getCnt()
+                );
     }
 }

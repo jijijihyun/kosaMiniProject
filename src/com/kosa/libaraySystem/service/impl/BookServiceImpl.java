@@ -103,5 +103,10 @@ public class BookServiceImpl implements BookService {
         return bookDAO.getBookGroupedListSelectCategoryNum(categoryNo);
     }
 
+    @Override
+    public Book getBookSearchByTitle(String title) throws SQLException {
+        return bookDAO.selectBookByBookTitle(title);
+    }
+
 
 }

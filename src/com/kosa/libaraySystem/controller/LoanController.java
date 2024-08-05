@@ -38,7 +38,7 @@ public class LoanController {
             scanner.nextLine();  // 개행 문자 소비
 
             if (choice == 1) {
-                executeLoan(scanner);
+                executeLoan(scanner, user);
             } else if (choice == 2) {
                 break;
             } else {
@@ -48,7 +48,7 @@ public class LoanController {
     }
 
 
-    public void executeLoan(Scanner scanner) throws SQLException {
+    public void executeLoan(Scanner scanner, User user) throws SQLException {
         System.out.print("입력 도서명: ");
         String bookTitle = scanner.nextLine();
         int stepNum;
@@ -87,8 +87,14 @@ public class LoanController {
                 stepNum = scanner.nextInt();
                 scanner.nextLine();  // 개행 문자 소비
             }
+            if(books.get(stepNum-1).getStatus().equals("대출중")){
+                System.out.println("해당 도서는 대출이 불가합니다.");
+            }
+            else{
+                loanService.createLoanRowByBook(books.get(stepNum-1), user);
+                loanService.updateStatusBookByBook(books.get(stepNum-1), "대출중");
+            }
         }
-
         //어떤 도서를 고를지 번호 선택해서 확실하게 정한다. -> 
         //대출 실행 ㄱㄱ
 

@@ -208,14 +208,7 @@ public class BookDAO {
     public List<Book> getBookListSelectTitle(String title) throws SQLException {
         //일단 싹 긁어와 -> 북 리스트에 하나씩 다 넣어.
         //보여주는건 다른데서 처리
-        String query = "SELECT " +
-                "b.bookNo," +
-                "b.title," +
-                "b.authorNo," +
-                "b.publisherNo," +
-                "b.categoryNo" +
-                "b.status"+
-                "FROM Books b where b.title like '%?%'";
+        String query = "SELECT * FROM Books b where b.title = ?";
 
         List<Book> books = new ArrayList<>();
 
@@ -229,11 +222,17 @@ public class BookDAO {
             while (resultSet.next()) {
                 Book book = new Book();
                 book.setBookNo(resultSet.getInt("bookNo"));
+                System.out.println(resultSet.getInt("bookNo"));
                 book.setTitle(resultSet.getString("title"));
+                System.out.println(resultSet.getString("title"));
                 book.setAuthorNo(resultSet.getInt("authorNo"));
+                System.out.println(resultSet.getInt("authorNo"));
                 book.setPublisherNo(resultSet.getInt("publisherNo"));
+                System.out.println(resultSet.getInt("publisherNo"));
                 book.setCategoryNo(resultSet.getInt("categoryNo"));
+                System.out.println(resultSet.getInt("categoryNo"));
                 book.setStatus(resultSet.getString("status"));
+                System.out.println(resultSet.getString("status"));
                 books.add(book);
             }
         }
@@ -381,5 +380,27 @@ public class BookDAO {
             return null;
         }
         return bookGroup;
+    }
+
+    public Book selectBookByBookTitle(String title) throws SQLException{
+        String sql = "Select * from books b where b.title = ?";
+        Book b = new Book();
+
+        try(Connection conn = DBUtils.getConnection();
+        PreparedStatement p = conn.prepareStatement(sql)){
+            p.setString(1, title);
+
+            ResultSet rs = p.executeQuery();
+
+            if(rs.next()){
+                b.setTitle(rs.getString("title"));
+                b.setAuthorNo(rs.getInt("authorNo"));
+                b.setStatus(rs.getString("status"));
+                b.setCategoryNo(rs.getInt("categoryNo"));
+                b.setPublisherNo(rs.getInt("publisherNo"));
+                b.setBookNo(rs.getInt("bookNo"));
+            }
+        }
+        return b;
     }
 }

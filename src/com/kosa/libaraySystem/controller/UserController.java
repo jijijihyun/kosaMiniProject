@@ -59,7 +59,7 @@ public class UserController {
                     new ReviewController().reviewControl(user);
                     break;
                 case 4 :
-
+                    new LoanController().startLoanProcess(user);
                     break;
                 case 5 :
 

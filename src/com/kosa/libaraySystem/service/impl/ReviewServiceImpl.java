@@ -5,7 +5,9 @@ import com.kosa.libaraySystem.model.Review;
 import com.kosa.libaraySystem.model.User;
 import com.kosa.libaraySystem.service.ReviewService;
 
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ReviewServiceImpl implements ReviewService {
 
@@ -16,9 +18,14 @@ public class ReviewServiceImpl implements ReviewService {
         return null;
     }
 
-    public void setReview(User user, String bookTitle, String content){
+    public void setReview(User user, int bookNo, String content, Date nowTime){
         System.out.println("리뷰서비스 실행");
-        reviewDAO.insertReview(user, bookTitle,content);
+        reviewDAO.insertReview(user, bookNo, content, nowTime);
+    }
+
+    @Override
+    public List<Review> getReviewsByBookTitle(String bookTitle) throws SQLException {
+        return reviewDAO.selectReviewsByBookTitleAll(bookTitle);
     }
 
     /*
