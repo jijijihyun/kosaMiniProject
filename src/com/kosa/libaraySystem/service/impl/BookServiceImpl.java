@@ -26,37 +26,56 @@ public class BookServiceImpl implements BookService {
         return bookDAO.findCategoryNoByName(bcategory);
     }
 
-    // 출판사 이름을 입력받아 출판사 번호를 리턴
+    @Override
+    public String reverseCategorySearch(int bcategory) {
+        return bookDAO.findCategoryNoByName(bcategory);
+    }    // 출판사 이름을 입력받아 출판사 번호를 리턴
     @Override
     public int publisherSearch(String bpublisher) {
         // Implement the logic to search for a publisher using the DAO
         return bookDAO.findPublisherNoByName(bpublisher);
     }
 
-    // 작가 이름을 입력받아 작가 번호를 리턴
+    @Override
+    public String reversePublisherSearch(int bpublisher) {
+        return bookDAO.findNAmeByPublisherNo(bpublisher);
+    }    // 작가 이름을 입력받아 작가 번호를 리턴
     @Override
     public int authorSearch(String a) {
         // Implement the logic to search for an author using the DAO
         return bookDAO.findAuthorNoByName(a);
     }
 
-    // 책 제목을 입력받아 해당 첵을 삭제
-    public void deleteBookByTitle(String title) {
-        bookDAO.deleteBookByTitle(title);
+    @Override
+    public String reverseAuthorSearch(int a) {
+
+        return bookDAO.findNameByAuthorNo(a);
+
+    }    // 책 제목을 입력받아 해당 첵을 삭제
+    public void deleteBookByTitle(int bookNo) {
+        bookDAO.deleteBookByTitle(bookNo);
+
     }
 
 
     // 책 제목으로 검색
     @Override
-    public Book searchBookByTitle(String title) {
+    public List<Book> searchBookByTitle(String title) {
+
         return bookDAO.findBookByTitle(title);
     }
 
     // 책 제목을 입력받아 바로 업데이트
     @Override
-    public void updateBook(String oldTitle, String newTitle, int authorNo, int publisherNo, int categoryNo) {
-        bookDAO.updateBook(oldTitle, newTitle, authorNo, publisherNo, categoryNo);
+    public void updateBook(String newTitle, int ano, int pno, int cno, int bookNo) {
+        bookDAO.updateBook(newTitle, ano, pno, cno, bookNo);
     }
+    
+    public int bNoSearch(int bno) {
+
+        return bookDAO.findBooksNoByNo(bno);
+    }
+
 
     /*
     ==========유저쪽 구현===========

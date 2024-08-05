@@ -9,14 +9,23 @@ import java.util.List;
 
 public interface BookService {
 
-    public int authorSearch (String a);
+    public int authorSearch(String a);
+
+    public String reverseAuthorSearch(int a);
     public void addBook(String btitle, int authorNo, int publisherNo, int categoryNo);
     int categorySearch(String bcategory);
+    String reverseCategorySearch(int bcategory);
     int publisherSearch(String bpublisher);
-    void deleteBookByTitle(String title);
-    Book searchBookByTitle(String title); // Add this method
-    void updateBook(String oldTitle, String newTitle, int authorNo, int publisherNo, int categoryNo); // Add this method
 
+    String reversePublisherSearch(int bpublisher);
+
+    void deleteBookByTitle(int bookNo);
+
+    List<Book> searchBookByTitle(String title);
+    
+    void updateBook(String newTitle, int ano, int pno, int cno, int bookNo);
+
+    int bNoSearch(int bNo);
 
     /*
     ==============유저쪽 추가==================

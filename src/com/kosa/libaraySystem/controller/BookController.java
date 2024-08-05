@@ -92,9 +92,9 @@ public class BookController {
 
             for (int i = 0; book.size() > i; i++) {
 
-                int baNo = book.get(i).getBookAuthorNo();
-                int bpNo = book.get(i).getBookPublisherNo();
-                int bcno = book.get(i).getBookCategoryNo();
+                int baNo = book.get(i).getAuthorNo();
+                int bpNo = book.get(i).getPublisherNo();
+                int bcno = book.get(i).getCategoryNo();
 
 
                 String a = bookService.reverseAuthorSearch(baNo);
@@ -102,7 +102,7 @@ public class BookController {
                 String c = bookService.reverseCategorySearch(bcno);
 
                 System.out.print("" + book.get(i).getBookNo());
-                System.out.print("\t" + book.get(i).getBookTitle());
+                System.out.print("\t" + book.get(i).getTitle());
                 System.out.print("\t" + bookService.reverseAuthorSearch(baNo));
                 System.out.print("\t" + p);
                 System.out.print("\t" + bookService.reverseCategorySearch(bcno));

@@ -30,6 +30,21 @@ public class BookDAO {
         return 0;
     }
 
+    // 작가 번호으로 각가 이름 찾는
+    public String findNameByAuthorNo(int authorNo) {
+        String sql = "SELECT name FROM Authors WHERE authorNo = ?";
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, authorNo);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     // 출판사 이름으로 출판사 번호 찾는
     public int findPublisherNoByName(String publisherName) {
         String sql = "SELECT publisherNo FROM Publishers WHERE name = ?";
@@ -46,8 +61,24 @@ public class BookDAO {
         return 0;
     }
 
+    // 출판사 번호로 출판사 이름 찾는
+    public String findNAmeByPublisherNo(int publisherNO) {
+        String sql = "SELECT * FROM Publishers WHERE publisherNO = ?";
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, publisherNO);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }    
+    
     // 카테고리 이름으로 카테고리 번호 찾는
-    public int findCategoryNoByName(String categoryName) {
+	public int findCategoryNoByName(String categoryName) {
         String sql = "SELECT categoryNo FROM Categories WHERE name = ?";
         try (Connection conn = DBUtils.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -62,6 +93,22 @@ public class BookDAO {
         return 0;
     }
 
+    // 카테고리 번호 로 카테고리 이름 찾는
+    public String findCategoryNoByName(int categoryNo) {
+        String sql = "SELECT name FROM Categories WHERE categoryNo = ?";
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, categoryNo);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }    
+    
     // 입력한  정보로 찾은 번호(작가, 출판사, 카태고리)와 입력한 제목으로 북 태이블에 책 추가
     public void insertBook(String title, int authorNo, int publisherNo, int categoryNo) {
         String sql = "INSERT INTO Books (title, authorNo, publisherNo, categoryNo) VALUES (?, ?, ?, ?)";
@@ -77,58 +124,83 @@ public class BookDAO {
         }
     }
 
-    // 책 제목만 입력받아 바로 삭제
-    public void deleteBookByTitle(String title) {
-        String sql = "DELETE FROM Books WHERE title = ?";
+    // 책 번호만 입력받아 바로 삭제
+    public void deleteBookByTitle(int bookNo) {
+
+        String sql = "DELETE FROM Books WHERE bookNo = ?";
         try (Connection conn = DBUtils.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, title);
+            pstmt.setInt(1, bookNo);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    // 작가 이름으로 각가 번호 찾는
-    public Book findBookByTitle(String title) {
-            /* 20240801 추가
-        String sql = "SELECT * FROM Books WHERE title = ?";
+    // 타이틀 받아서
+    public List<Book> findBookByTitle(String title) {
+
+        List<Book> list = new ArrayList<>();
+        String sql = "SELECT * FROM Books WHERE title like ? ";
         try (Connection conn = DBUtils.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, title);
+
+            pstmt.setString(1, "%" + title + "%");
             ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
+
+            while (rs.next()) {
                 Book book = new Book();
-                book.setBookTitle(rs.getString("title"));
-                book.setBookAuthorNo(rs.getInt("authorNo"));
-                book.setBookPublisherNo(rs.getInt("publisherNo"));
-                book.setBookCategoryNo(rs.getInt("categoryNo"));
-                return book;
+
+                book.setBookNo(rs.getInt("bookNo"));
+                book.setTitle(rs.getString("title"));
+                book.setAuthorNo(rs.getInt("authorNo"));
+                book.setPublisherNo(rs.getInt("publisherNo"));
+                book.setCategoryNo(rs.getInt("categoryNo"));
+
+                list.add(book);
             }
+            return list;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        */
-
         return null;
     }
 
-    // 작가 이름으로 각가 번호 찾는
-    public void updateBook(String oldTitle, String newTitle, int authorNo, int publisherNo, int categoryNo) {
-        String sql = "UPDATE Books SET title = ?, authorNo = ?, publisherNo = ?, categoryNo = ? WHERE title = ?";
+    // 북 넘버에 대한 제목을 변경
+    public void updateBook(String newTitle, int authorNo, int publisherNo, int categoryNo, int bookNo) {
+
+        String sql = "UPDATE Books " +
+                "SET title = ?, authorNo = ?, publisherNo = ?, categoryNo = ? " +
+                "WHERE bookNo = ?";
         try (Connection conn = DBUtils.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, newTitle);
             pstmt.setInt(2, authorNo);
             pstmt.setInt(3, publisherNo);
             pstmt.setInt(4, categoryNo);
-            pstmt.setString(5, oldTitle);
+            pstmt.setInt(5, bookNo);
+
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    public int findBooksNoByNo(int bookNo) {
+        String sql = "SELECT * FROM books  WHERE bookNo = ?";
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, bookNo);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("bookNo");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
     /*
     ===============이하 유저에서 필요한 기능============
      */
