@@ -142,6 +142,7 @@ public class BookDAO {
                 "b.authorNo," +
                 "b.publisherNo," +
                 "b.categoryNo" +
+                "b.status"+
                 "FROM Books b where b.title like '%?%'";
 
         List<Book> books = new ArrayList<>();
@@ -175,12 +176,12 @@ public class BookDAO {
     public List<BookGrouped> getBookGroupedListSelectTitle(String bookTitle) {
         //일단 싹 긁어와 -> 북 리스트에 하나씩 다 넣어.
         //보여주는건 다른데서 처리
-        String query = "SELECT bk.title, bkauthor.name, cate.name, pub.name, count(*)" +
-                "FROM (SELECT b.title, b.authorNo, b.categoryNo, b.publisherNo from books b where b.title like '%?%') as bk" +
-                "join (SELECT a.authorNo, a.name from authors a) as bkauthor on bk.authorNo = bkauthor.authorNo" +
-                "join (SELECT c.categoryNo, c.name, c.parentNo from categories c) as cate on bk.categoryNo = cate.categoryNo" +
-                "join (SELECT publisherNo, p.name from publishers p) as pub on bk.publisherNo = pub.publisherNo" +
-                "group by bk.title, bkauthor.name, cate.name, pub.name";
+        String query = "SELECT bk.title, bkauthor.name, cate.name, pub.name, count(*) as cnt " +
+                "FROM (SELECT b.title, b.authorNo, b.categoryNo, b.publisherNo from books b where b.title like ?) as bk " +
+                "JOIN (SELECT a.authorNo, a.name from authors a) as bkauthor on bk.authorNo = bkauthor.authorNo " +
+                "JOIN (SELECT c.categoryNo, c.name, c.parentNo from categories c) as cate on bk.categoryNo = cate.categoryNo " +
+                "JOIN (SELECT p.publisherNo, p.name from publishers p) as pub on bk.publisherNo = pub.publisherNo " +
+                "GROUP BY bk.title, bkauthor.name, cate.name, pub.name";
 
         List<BookGrouped> bookGroup = new ArrayList<>();
 
@@ -188,7 +189,109 @@ public class BookDAO {
              PreparedStatement preStat = conn.prepareStatement(query))
         //와우 트라이문 안에 STREAM 여러개를 열어도 되는구나 -> 예외처리를 한번에 트라이문 하나에서 처리
         {
-            preStat.setString(1, bookTitle);
+            preStat.setString(1, '%'+bookTitle+'%');
+            ResultSet resultSet = preStat.executeQuery();
+
+            while (resultSet.next()) {
+                BookGrouped book = new BookGrouped();
+                book.setBookTitle(resultSet.getString(1));
+                book.setAuthorName(resultSet.getString(2));
+                book.setCategoryName(resultSet.getString(3));
+                book.setPublisherName(resultSet.getString(4));
+                book.setCnt(resultSet.getInt(5));
+                bookGroup.add(book);
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return bookGroup;
+    }
+
+    public List<BookGrouped> getBookGroupedListSelectAuthorName(String authorName) {
+        String sql = "SELECT bk.title, bkauthor.name, cate.name, pub.name, count(*) as cnt " +
+                "FROM (SELECT b.title, b.authorNo, b.categoryNo, b.publisherNo from books b) as bk " +
+                "JOIN (SELECT a.authorNo, a.name from authors a where a.name like ?) as bkauthor on bk.authorNo = bkauthor.authorNo " +
+                "JOIN (SELECT c.categoryNo, c.name, c.parentNo from categories c) as cate on bk.categoryNo = cate.categoryNo " +
+                "JOIN (SELECT p.publisherNo, p.name from publishers p) as pub on bk.publisherNo = pub.publisherNo " +
+                "GROUP BY bk.title, bkauthor.name, cate.name, pub.name";
+
+        List<BookGrouped> bookGroup = new ArrayList<>();
+
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement preStat = conn.prepareStatement(sql))
+        //와우 트라이문 안에 STREAM 여러개를 열어도 되는구나 -> 예외처리를 한번에 트라이문 하나에서 처리
+        {
+            preStat.setString(1, '%'+authorName+'%');
+            ResultSet resultSet = preStat.executeQuery();
+
+            while (resultSet.next()) {
+                BookGrouped book = new BookGrouped();
+                book.setBookTitle(resultSet.getString(1));
+                book.setAuthorName(resultSet.getString(2));
+                book.setCategoryName(resultSet.getString(3));
+                book.setPublisherName(resultSet.getString(4));
+                book.setCnt(resultSet.getInt(5));
+                bookGroup.add(book);
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return bookGroup;
+    }
+
+    public List<BookGrouped> getBookGroupedListSelectPublisherName(String pubName) {
+        String sql = "SELECT bk.title, bkauthor.name, cate.name, pub.name, count(*) as cnt " +
+                "FROM (SELECT b.title, b.authorNo, b.categoryNo, b.publisherNo from books b) as bk " +
+                "JOIN (SELECT a.authorNo, a.name from authors a) as bkauthor on bk.authorNo = bkauthor.authorNo " +
+                "JOIN (SELECT c.categoryNo, c.name, c.parentNo from categories c) as cate on bk.categoryNo = cate.categoryNo " +
+                "JOIN (SELECT p.publisherNo, p.name from publishers p where p.name like ?) as pub on bk.publisherNo = pub.publisherNo " +
+                "GROUP BY bk.title, bkauthor.name, cate.name, pub.name";
+
+        List<BookGrouped> bookGroup = new ArrayList<>();
+
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement preStat = conn.prepareStatement(sql))
+        //와우 트라이문 안에 STREAM 여러개를 열어도 되는구나 -> 예외처리를 한번에 트라이문 하나에서 처리
+        {
+            preStat.setString(1, '%'+pubName+'%');
+            ResultSet resultSet = preStat.executeQuery();
+
+            while (resultSet.next()) {
+                BookGrouped book = new BookGrouped();
+                book.setBookTitle(resultSet.getString(1));
+                book.setAuthorName(resultSet.getString(2));
+                book.setCategoryName(resultSet.getString(3));
+                book.setPublisherName(resultSet.getString(4));
+                book.setCnt(resultSet.getInt(5));
+                bookGroup.add(book);
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+        return bookGroup;
+    }
+
+    public List<BookGrouped> getBookGroupedListSelectCategoryNum(int categoryNo) {
+        String sql = "SELECT bk.title, bkauthor.name, cate.name, pub.name, count(*) as cnt " +
+                "FROM (SELECT b.title, b.authorNo, b.categoryNo, b.publisherNo from books b) as bk " +
+                "JOIN (SELECT a.authorNo, a.name from authors a) as bkauthor on bk.authorNo = bkauthor.authorNo " +
+                "JOIN (SELECT c.categoryNo, c.name, c.parentNo from categories c where c.categoryNo = ?) as cate on bk.categoryNo = cate.categoryNo " +
+                "JOIN (SELECT p.publisherNo, p.name from publishers p) as pub on bk.publisherNo = pub.publisherNo " +
+                "GROUP BY bk.title, bkauthor.name, cate.name, pub.name";
+
+        List<BookGrouped> bookGroup = new ArrayList<>();
+
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement preStat = conn.prepareStatement(sql))
+        //와우 트라이문 안에 STREAM 여러개를 열어도 되는구나 -> 예외처리를 한번에 트라이문 하나에서 처리
+        {
+            preStat.setInt(1, categoryNo);
             ResultSet resultSet = preStat.executeQuery();
 
             while (resultSet.next()) {

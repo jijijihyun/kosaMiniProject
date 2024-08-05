@@ -69,5 +69,20 @@ public class BookServiceImpl implements BookService {
         return bookDAO.getBookGroupedListSelectTitle(bookTitle);
     }
 
+    @Override
+    public List<BookGrouped> getBookGroupedSearchByAuthorName(String authorName) throws SQLException {
+        return bookDAO.getBookGroupedListSelectAuthorName(authorName);
+    }
+
+    @Override
+    public List<BookGrouped> getBookGroupedSearchByPublisherName(String pubName) throws SQLException {
+        return bookDAO.getBookGroupedListSelectPublisherName(pubName);
+    }
+
+    @Override
+    public List<BookGrouped> getBookGroupedSearchByCategoryNum(int categoryNo) {
+        return bookDAO.getBookGroupedListSelectCategoryNum(categoryNo);
+    }
+
 
 }

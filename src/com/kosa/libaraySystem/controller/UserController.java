@@ -53,7 +53,7 @@ public class UserController {
                     new BookController().userSearchBook(user);
                     break;
                 case 2 :
-                    new LoanController().viewLoanRecords();
+                    new LoanController().startLoanProcess(user);
                     break;
                 case 3 :
                     new ReviewController().reviewControl(user);

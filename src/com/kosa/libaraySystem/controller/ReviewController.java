@@ -1,10 +1,14 @@
 package com.kosa.libaraySystem.controller;
 
+import com.kosa.libaraySystem.model.BookGrouped;
 import com.kosa.libaraySystem.model.User;
+import com.kosa.libaraySystem.service.BookService;
 import com.kosa.libaraySystem.service.ReviewService;
+import com.kosa.libaraySystem.service.impl.BookServiceImpl;
 import com.kosa.libaraySystem.service.impl.ReviewServiceImpl;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 /*
@@ -17,6 +21,7 @@ import java.util.Scanner;
  */
 public class ReviewController {
     private ReviewService reviewService = new ReviewServiceImpl();
+    private BookService bookService  = new BookServiceImpl();
 
 
     public void reviewControl(User user)throws SQLException {
@@ -24,7 +29,7 @@ public class ReviewController {
         boolean isRunning = true;
 
         while (isRunning) {
-            System.out.println("\n1. 리뷰 작성\n2. 돌아 가기");
+            System.out.println("\n1. 리뷰 작성\n2. 리뷰 조회\n3. 돌아 가기");
             int choice = scanner.nextInt();
             scanner.nextLine();
 
@@ -50,6 +55,18 @@ public class ReviewController {
                     }
                     break;
                 case 2:
+                    System.out.println("\n리뷰를 검색할 도서명을 입력하세요");
+                    String bookTitle2 = scanner.nextLine();
+
+                    List<BookGrouped> books = bookService.getBookGroupedSearchTitle(bookTitle2);
+                    if (!books.isEmpty()) {//임시
+
+
+                    } else {
+                        System.out.println("\n유효한 책이 없습니다.");
+                    }
+                    break;
+                case 3:
                     System.out.println("\n유저 메인으로 돌아갑니다.");
                     isRunning= false;
                     break;
