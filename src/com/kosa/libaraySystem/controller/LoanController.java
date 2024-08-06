@@ -47,8 +47,31 @@ public class LoanController {
         }
     }
 
+    public void startReturnProcess(User user) throws SQLException{
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("1. 반납 실행");
+            System.out.println("2. 돌아가기");
+            System.out.print("선택: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // 개행 문자 소비
 
-    public void executeLoan(Scanner scanner, User user) throws SQLException {
+            if (choice == 1) {
+                executeReturn(scanner, user);
+            } else if (choice == 2) {
+                break;
+            } else {
+                System.out.println("유효한 입력이 아닙니다.");
+            }
+        }
+    }
+
+    private void executeReturn(Scanner scanner, User user) {
+        //내가 반납한 리스트
+    }
+
+
+    private void executeLoan(Scanner scanner, User user) throws SQLException {
         System.out.print("입력 도서명: ");
         String bookTitle = scanner.nextLine();
         int stepNum;
