@@ -37,7 +37,9 @@ public interface BookService {
 
     List<BookGrouped> getBookGroupedSearchByPublisherName(String pubName)throws SQLException;
 
-    List<BookGrouped> getBookGroupedSearchByCategoryNum(int categoryNo);
+    List<BookGrouped> getBookGroupedSearchByCategoryNum(int categoryNo)throws SQLException;
 
     Book getBookSearchByTitle(String title)throws SQLException;
+
+    public Book readDataByBookNum(int bookNo)throws SQLException;
 }

@@ -3,9 +3,11 @@ package com.kosa.libaraySystem.controller;
 import com.kosa.libaraySystem.model.*;
 import com.kosa.libaraySystem.service.*;
 import com.kosa.libaraySystem.service.impl.*;
+import com.kosa.libaraySystem.util.TupleKNY;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -219,57 +221,53 @@ public class BookController {
     /*
     ==================이하 유저 기능에 필요한 내용들=====================
      */
-    public void userSearchBook(User user) throws SQLException {
+    public void userSearchBook(User user) {
         Scanner scanner = new Scanner(System.in);
         boolean isRunning = true;
 
         while (isRunning) {
-            System.out.println("\n1. 책명으로 검색\n2. 저자로 검색\n3. 출판사로 검색\n4. 카테고리로 검색\n5.검색종료");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            System.out.println("\n1. 책명으로 검색\n2. 저자로 검색\n3. 출판사로 검색\n4.검색종료");
+                int choice = safelyGetIntInput();
+                try{
+                    switch (choice) {
+                        case 1:
+                            System.out.println("\n책명을 입력하세요");
+                            String bookTitle = scanner.nextLine();
 
-            switch (choice) {
-                case 1:
-                    System.out.println("\n책명을 입력하세요");
-                    String bookTitle = scanner.nextLine();
+                            //책 리스트 받을 공간 생성 후 받아
+                            List<BookGrouped> bookGroupeds = bookService.getBookGroupedSearchTitle(bookTitle);
+                            showBookListUser(bookGroupeds);
+                            break;
+                        case 2:
+                            System.out.println("\n저자를 입력하세요");
+                            String authorName = scanner.nextLine();
 
-                    //책 리스트 받을 공간 생성 후 받아
-                    List<BookGrouped> bookGroupeds = bookService.getBookGroupedSearchTitle(bookTitle);
-                    showBookListUser(bookGroupeds);
-                    break;
-                case 2:
-                    System.out.println("\n저자를 입력하세요");
-                    String authorName = scanner.nextLine();
+                            //책 리스트 받을 공간 생성 후 받아
+                            List<BookGrouped> bookGroupedByAuthor = bookService.getBookGroupedSearchByAuthorName(authorName);
+                            showBookListUser(bookGroupedByAuthor);
+                            break;
+                        case 3:
+                            System.out.println("\n출판사를 입력하세요");
+                            String pubName = scanner.nextLine();
 
-                    //책 리스트 받을 공간 생성 후 받아
-                    List<BookGrouped> bookGroupedByAuthor = bookService.getBookGroupedSearchByAuthorName(authorName);
-                    showBookListUser(bookGroupedByAuthor);
-                    break;
-                case 3:
-                    System.out.println("\n출판사를 입력하세요");
-                    String pubName = scanner.nextLine();
+                            //책 리스트 받을 공간 생성 후 받아
+                            List<BookGrouped> bookGroupedByPub = bookService.getBookGroupedSearchByPublisherName(pubName);
+                            showBookListUser(bookGroupedByPub);
 
-                    //책 리스트 받을 공간 생성 후 받아
-                    List<BookGrouped> bookGroupedByPub = bookService.getBookGroupedSearchByPublisherName(pubName);
-                    showBookListUser(bookGroupedByPub);
+                            break;
 
-                    break;
+                        case 4:
+                            System.out.println("\n검색을 종료합니다.");
+                            isRunning= false;
+                            break;
+                        default:
+                            System.out.println("\n유효하지 않은 입력입니다.");
+                            break;
+                    }
+                }catch(SQLException e){
+                    System.out.println(e.getMessage());
+                }
 
-                case 4:
-                    System.out.println("\n**상위 카테고리면 하위 카테고리명을 출력하고");
-                    System.out.println("\n**하위 카테고리면 책 리스트를 출력합니다.");
-
-                    searchBooksByCategory();
-                    break;
-
-                case 5:
-                    System.out.println("\n검색을 종료합니다.");
-                    isRunning= false;
-                    break;
-                default:
-                    System.out.println("\n유효하지 않은 입력입니다.");
-                    break;
-            }
         }
     }
     //문자열 길이 포맷팅
@@ -284,13 +282,18 @@ public class BookController {
             System.out.println("\n해당 책은 없습니다.");
         }
         else{
-            System.out.printf("\n%-40s  %-10s  %-15s  %-10s  %s\n","Title", "Author", "Category", "Publisher", "Count");
+            System.out.printf("\n%-40s  %-10s  %-15s %-15s %-10s  %s\n","책명", "작가", "대분류", "소분류", "출판사", "권수");
             //책정보가지고 출력하는 함수들 호출
             for(BookGrouped b: bg){
-                System.out.printf("%-40s  %-10s  %-15s  %-10s  %3d\n",
+                TupleKNY<String,String> categoriesName =
+                categoryService.getHierarchyCategory(categoryService.getCategoryByName(b.getCategoryName()));
+                String bigCateName = categoriesName.getKey();
+                String smallCateName = categoriesName.getValue();
+                System.out.printf("%-40s  %-10s  %-15s %-15s %-10s  %3d\n",
                         b.getBookTitle(),
                         formatString(b.getAuthorName(), 10),
-                        formatString(b.getCategoryName(), 15),
+                        formatString(bigCateName, 15),
+                        formatString(smallCateName, 15),
                         formatString(b.getPublisherName(), 10),
                         b.getCnt()
                 );
@@ -321,7 +324,7 @@ public class BookController {
             for (int i = 0; i < subCategories.size(); i++) {
                 System.out.println((i + 1) + ". " + subCategories.get(i).getName());
             }
-            int choice = scanner.nextInt();
+            int choice = safelyGetIntInput();
             scanner.nextLine();  // 개행 문자 소비
 
 
@@ -331,8 +334,25 @@ public class BookController {
                 System.out.println("잘못된 선택입니다.");
             }
         } else {
-            List<BookGrouped> books = bookService.getBookGroupedSearchByCategoryNum(categoryNo);
-            showBookListUser(books);
+            try{
+                List<BookGrouped> books = bookService.getBookGroupedSearchByCategoryNum(categoryNo);
+                showBookListUser(books);
+            }catch(SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    //숫자 입력 안전 장치
+    private int safelyGetIntInput() {
+        while (true) {
+            try {
+                String input = scanner.nextLine();
+                int number = Integer.parseInt(input);
+                return number;  // 입력 받은 숫자 반환
+            } catch (NumberFormatException e) {
+                System.out.println("제대로된 숫자를 입력해주세요");
+            }
         }
     }
 }

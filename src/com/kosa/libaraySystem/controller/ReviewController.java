@@ -37,9 +37,10 @@ public class ReviewController {
         boolean isRunning = true;
 
         while (isRunning) {
+            System.out.printf("\n=== 리뷰 조회 페이지 ===");
             System.out.println("\n1. 리뷰 작성\n2. 리뷰 조회\n3. 돌아 가기");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = user.safeGetIntInput();
+
 
             switch (choice) {
                 case 1:
@@ -62,8 +63,8 @@ public class ReviewController {
                         }
                     System.out.println("\n리뷰를 등록하고 싶은 책의 번호를 입력하세요");
                     try {
-                        userChoice1 = scanner.nextInt();
-                        scanner.nextLine();
+                        userChoice1 = user.safeGetIntInput();
+
                         if(userChoice1<1 && userChoice1>books1.size()+1) throw new Exception();
                     }catch(Exception e){
                         System.out.println("올바른 숫자를 입력하지 않으셨네요..");
@@ -85,10 +86,14 @@ public class ReviewController {
                         }
                         LocalDate today = LocalDate.now();
                         Date sqlDate = Date.valueOf(today);
-
-                        reviewService.setReview(user,
-                                bookService.getBookSearchByTitle(books1.get(userChoice1 -1).getBookTitle()).getBookNo(),
-                                reviewBuilder.toString(),sqlDate);//여기에 실제 리뷰내용을 데이터베이스에 접근하는 내용
+                        try{
+                            reviewService.setReview(user,
+                                    bookService.getBookSearchByTitle(books1.get(userChoice1 -1).getBookTitle()).getBookNo(),
+                                    reviewBuilder.toString(),sqlDate);//여기에 실제 리뷰내용을 데이터베이스에 접근하는 내용
+                        }catch(SQLException e){
+                            System.out.println("리뷰가 제대로 등록되지 않았습니다. 다시 확인해보세요.");
+                            break;
+                        }
 
                         }
                     } else {//도서 리스트가 없다면
@@ -116,8 +121,7 @@ public class ReviewController {
                         }
                         System.out.println("\n리뷰를 확인하고 싶은 책의 번호를 입력하세요");
                         try {
-                            userChoice = scanner.nextInt();
-                            scanner.nextLine();
+                            userChoice = user.safeGetIntInput();
                             if(userChoice<1 && userChoice>books.size()+1) throw new Exception();
                         }catch(Exception e){
                             System.out.println("올바른 숫자를 입력하지 않으셨네요..");
@@ -154,7 +158,7 @@ public class ReviewController {
     public void writeReview() {
     }
     private void showReviewConsole(List<Review> reviews, String bookTitle)throws Exception{
-        System.out.printf("\n====%s 의 리뷰 리스트 ====", bookTitle);
+        System.out.printf("\n====%s 의 리뷰 리스트 ====\n", bookTitle);
 
         for(Review r : reviews){
             System.out.printf("\n%s: %-10s  %s: %-10s  %s: %-10s  %s: %-10s\n",

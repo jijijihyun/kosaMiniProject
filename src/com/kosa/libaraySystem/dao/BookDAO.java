@@ -222,29 +222,26 @@ public class BookDAO {
             while (resultSet.next()) {
                 Book book = new Book();
                 book.setBookNo(resultSet.getInt("bookNo"));
-                System.out.println(resultSet.getInt("bookNo"));
+                //System.out.println(resultSet.getInt("bookNo"));
                 book.setTitle(resultSet.getString("title"));
-                System.out.println(resultSet.getString("title"));
+                //System.out.println(resultSet.getString("title"));
                 book.setAuthorNo(resultSet.getInt("authorNo"));
-                System.out.println(resultSet.getInt("authorNo"));
+                //System.out.println(resultSet.getInt("authorNo"));
                 book.setPublisherNo(resultSet.getInt("publisherNo"));
-                System.out.println(resultSet.getInt("publisherNo"));
+                //System.out.println(resultSet.getInt("publisherNo"));
                 book.setCategoryNo(resultSet.getInt("categoryNo"));
-                System.out.println(resultSet.getInt("categoryNo"));
+                //System.out.println(resultSet.getInt("categoryNo"));
                 book.setStatus(resultSet.getString("status"));
-                System.out.println(resultSet.getString("status"));
+                //System.out.println(resultSet.getString("status"));
                 books.add(book);
             }
+        }catch(SQLException e){
+            throw new SQLException("올바른 책 제목으로 접근하지 않았습니다.");
         }
         return books;
     }
 
-
-    public void selectShowListBook(List<Book> lsBook ){
-
-    }
-
-    public List<BookGrouped> getBookGroupedListSelectTitle(String bookTitle) {
+    public List<BookGrouped> getBookGroupedListSelectTitle(String bookTitle) throws SQLException{
         //일단 싹 긁어와 -> 북 리스트에 하나씩 다 넣어.
         //보여주는건 다른데서 처리
         String query = "SELECT bk.title, bkauthor.name, cate.name, pub.name, count(*) as cnt " +
@@ -272,15 +269,14 @@ public class BookDAO {
                 book.setCnt(resultSet.getInt(5));
                 bookGroup.add(book);
             }
-        }
-        catch (SQLException e){
-            e.printStackTrace();
-            return null;
+        }catch(SQLException e){
+            throw new SQLException("올바른 책 제목으로 접근하지 않았습니다.");
         }
         return bookGroup;
+
     }
 
-    public List<BookGrouped> getBookGroupedListSelectAuthorName(String authorName) {
+    public List<BookGrouped> getBookGroupedListSelectAuthorName(String authorName) throws SQLException {
         String sql = "SELECT bk.title, bkauthor.name, cate.name, pub.name, count(*) as cnt " +
                 "FROM (SELECT b.title, b.authorNo, b.categoryNo, b.publisherNo from books b) as bk " +
                 "JOIN (SELECT a.authorNo, a.name from authors a where a.name like ?) as bkauthor on bk.authorNo = bkauthor.authorNo " +
@@ -307,14 +303,13 @@ public class BookDAO {
                 bookGroup.add(book);
             }
         }
-        catch (SQLException e){
-            e.printStackTrace();
-            return null;
+        catch(SQLException e){
+            throw new SQLException("올바른 작가명으로 접근하지 않았습니다.");
         }
         return bookGroup;
     }
 
-    public List<BookGrouped> getBookGroupedListSelectPublisherName(String pubName) {
+    public List<BookGrouped> getBookGroupedListSelectPublisherName(String pubName) throws SQLException {
         String sql = "SELECT bk.title, bkauthor.name, cate.name, pub.name, count(*) as cnt " +
                 "FROM (SELECT b.title, b.authorNo, b.categoryNo, b.publisherNo from books b) as bk " +
                 "JOIN (SELECT a.authorNo, a.name from authors a) as bkauthor on bk.authorNo = bkauthor.authorNo " +
@@ -342,13 +337,12 @@ public class BookDAO {
             }
         }
         catch (SQLException e){
-            e.printStackTrace();
-            return null;
+            throw new SQLException("올바른 출판사명으로 접근하지 않았습니다");
         }
         return bookGroup;
     }
 
-    public List<BookGrouped> getBookGroupedListSelectCategoryNum(int categoryNo) {
+    public List<BookGrouped> getBookGroupedListSelectCategoryNum(int categoryNo) throws SQLException{
         String sql = "SELECT bk.title, bkauthor.name, cate.name, pub.name, count(*) as cnt " +
                 "FROM (SELECT b.title, b.authorNo, b.categoryNo, b.publisherNo from books b) as bk " +
                 "JOIN (SELECT a.authorNo, a.name from authors a) as bkauthor on bk.authorNo = bkauthor.authorNo " +
@@ -375,9 +369,8 @@ public class BookDAO {
                 bookGroup.add(book);
             }
         }
-        catch (SQLException e){
-            e.printStackTrace();
-            return null;
+        catch(SQLException e){
+            throw new SQLException("카테고리 번호로 접근하지 않았습니다.");
         }
         return bookGroup;
     }
@@ -400,7 +393,25 @@ public class BookDAO {
                 b.setPublisherNo(rs.getInt("publisherNo"));
                 b.setBookNo(rs.getInt("bookNo"));
             }
+        }catch(SQLException e){
+            throw new SQLException("올바른 책 제목으로 접근하지 않았습니다.");
         }
         return b;
+    }
+
+    public Book selectDataByBookNo(int BookNo) throws SQLException{
+        String sql = "Select * from books b where b.bookNo = ?";
+
+        try(Connection con = DBUtils.getConnection(); PreparedStatement p= con.prepareStatement(sql)){
+            p.setInt(1, BookNo);
+            ResultSet rs = p.executeQuery();
+            if(rs.next()){
+                return new Book(rs.getInt(1), rs.getString(2),rs.getInt(3),
+                        rs.getInt(4), rs.getInt(5), rs.getString(6));
+            }
+            else return null;
+        }catch(SQLException e){
+            throw new SQLException("올바른 책 번호로 접근하지 않았습니다.");
+        }
     }
 }

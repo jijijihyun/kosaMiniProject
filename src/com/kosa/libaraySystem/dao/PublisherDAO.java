@@ -1,6 +1,7 @@
 package com.kosa.libaraySystem.dao;
 
 import com.kosa.libaraySystem.config.DBUtils;
+import com.kosa.libaraySystem.model.Publisher;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

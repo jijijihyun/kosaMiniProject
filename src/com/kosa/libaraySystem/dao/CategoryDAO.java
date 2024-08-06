@@ -74,4 +74,22 @@ public class CategoryDAO {
         }
         return c;
     }
+
+    public Category selectCategoryByCategoryNo(int num) throws SQLException {
+        String sql = "SELECT * FROM Categories c WHERE c.categoryNo = ?";
+        Category c = new Category();
+        try (Connection connection = DBUtils.getConnection();
+             PreparedStatement preStat = connection.prepareStatement(sql)) {
+
+            preStat.setInt(1, num);
+            ResultSet resultSet = preStat.executeQuery();
+
+            if (resultSet.next()) {
+                c.setCategoryNo(resultSet.getInt("categoryNo"));
+                c.setName(resultSet.getString("name"));
+                c.setParentNo(resultSet.getInt("parentNo"));
+            }
+        }
+        return c;
+    }
 }

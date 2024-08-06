@@ -28,9 +28,8 @@ public class ReviewDAO {
         }
     }
 
-    public void insertReview(User user, int bookNo, String content, Date nowTime) {
-        System.out.println("리뷰 등록 쿼리 실행");
-        System.out.println(user.getUserNo() + bookNo + content + nowTime);
+    public void insertReview(User user, int bookNo, String content, Date nowTime) throws SQLException {
+        System.out.println("====리뷰 등록====");
         String sqlSQOneline = "INSERT INTO Reviews (bookNo, userNo, reviewText, reviewDate) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DBUtils.getConnection();
@@ -41,14 +40,6 @@ public class ReviewDAO {
             pstmt.setDate(4, nowTime);
 
             int num = pstmt.executeUpdate();
-
-            if (num >= 1) {
-                System.out.println(num);
-                return;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
         }
     }
 

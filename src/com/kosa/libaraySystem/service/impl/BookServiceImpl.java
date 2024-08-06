@@ -99,13 +99,18 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookGrouped> getBookGroupedSearchByCategoryNum(int categoryNo) {
+    public List<BookGrouped> getBookGroupedSearchByCategoryNum(int categoryNo) throws SQLException {
         return bookDAO.getBookGroupedListSelectCategoryNum(categoryNo);
     }
 
     @Override
     public Book getBookSearchByTitle(String title) throws SQLException {
         return bookDAO.selectBookByBookTitle(title);
+    }
+
+    @Override
+    public Book readDataByBookNum(int bookNo) throws SQLException {
+        return bookDAO.selectDataByBookNo(bookNo);
     }
 
 

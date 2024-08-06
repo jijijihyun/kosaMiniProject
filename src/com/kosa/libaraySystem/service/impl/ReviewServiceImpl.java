@@ -18,7 +18,7 @@ public class ReviewServiceImpl implements ReviewService {
         return null;
     }
 
-    public void setReview(User user, int bookNo, String content, Date nowTime){
+    public void setReview(User user, int bookNo, String content, Date nowTime)throws SQLException{
         System.out.println("리뷰서비스 실행");
         reviewDAO.insertReview(user, bookNo, content, nowTime);
     }
