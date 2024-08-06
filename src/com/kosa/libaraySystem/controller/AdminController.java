@@ -19,6 +19,7 @@ public class AdminController {
             int choice = scanner.nextInt();
             scanner.nextLine();
 
+            // 20240805 수정
             switch(choice) {
                 case 1 :
                     new UserController().manageUsers();
@@ -30,6 +31,12 @@ public class AdminController {
                     new CategoryController().manageCategories();
                     break;
                 case 4 :
+                    new AuthorController().manageAuthor();
+                    break;
+                case 5 :
+                    new PublisherController().managePublishers();
+                    break;
+                case 6 :
                     System.out.println("로그아웃 되었습니다.");
                     return;
                 default :

@@ -206,9 +206,13 @@ public class BookController {
             System.out.println("카테고리를 찾을 수 없습니다.");
             return;
         }
+        System.out.print("몇권 인가요? : ");
+        int books = scanner.nextInt();
 
-            // db "INSERT INTO Books (title, authorNo, publisherNo, categoryNo) VALUES (?, ?, ?, ?);"
-        bookService.addBook(btitle, authorNo1, publisherNo, categoryNo);
+        for(int i=0; i<books ; i++){
+            bookService.addBook(btitle, authorNo1, publisherNo, categoryNo);
+        }
+
         System.out.println("도서가 추가되었습니다.");
     }
 
