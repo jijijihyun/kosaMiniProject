@@ -7,7 +7,6 @@ import com.kosa.libaraySystem.util.TupleKNY;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -28,8 +27,7 @@ public class BookController {
         System.out.println("[5] 로그아웃");
         System.out.print(">> ");
 
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+        int choice =setInteger();
 
         switch (choice) {
             case 1:
@@ -66,7 +64,7 @@ public class BookController {
 
         // 책 번호 입력 하면 해당 북넘버 도서 삭제
         System.out.print("삭제할 도서의 번호을 입력하세요: ");
-        int bookNo = scanner.nextInt();
+        int bookNo = setInteger();
         // 20240804 추가
         //  도서 번호가 없는 경우 deleteBooks 종료
         int bno = bookService.bNoSearch(bookNo);
@@ -81,7 +79,7 @@ public class BookController {
 
     private boolean searchBooks() {
         System.out.print("조회할 도서의 제목을 입력하세요: ");
-        String title = scanner.nextLine();
+        String title = setStr();
         List<Book> book = bookService.searchBookByTitle(title);
         // 리턴 받은 book.getBookAuthorNo() 번호로 작가 이름 리턴
         if (!book.isEmpty()) {
@@ -132,7 +130,7 @@ public class BookController {
         // 변경할 도서의 번호를 입력 받으면 해당  번호의 도서를 새로 입력 받은 제목, 작가,출반사, 카태고리로 변경한다
         //만약 입력한 작가 ,출판사,카태고리가 없는 정보면 없다고 알리고 종료
         System.out.print("수정할 도서의 번호를: ");
-        int bookno = scanner.nextInt();
+        int bookno = setInteger();
 
         // 20240804 추가
         //  도서 번호가 없는 경우 updateBooks 종료
@@ -144,11 +142,11 @@ public class BookController {
 
         scanner.nextLine();
         System.out.print("새로운 제목을 입력하세요: ");
-        String newTitle = scanner.nextLine();
+        String newTitle = setStr();
 
         //
         System.out.print("새로운 작가를 입력 하세요 : ");
-        String bauthor = scanner.nextLine();
+        String bauthor = setStr();
         // bauthor 받고 작가 디비에서 검색 후 작가 번호를 리턴
         int authorNo1 = bookService.authorSearch(bauthor);
         if (authorNo1 == 0) {
@@ -157,7 +155,7 @@ public class BookController {
         }
 
         System.out.print("새로운 출판사를 입력하세요 : ");
-        String bpublisher = scanner.nextLine();
+        String bpublisher = setStr();
         // bpublisher 받고 출판사 디비에서 검색 후 출판사 번호를 리턴
         int publisherNo = bookService.publisherSearch(bpublisher);
         if (publisherNo == 0) {
@@ -166,7 +164,7 @@ public class BookController {
         }
 
         System.out.print("새로운 카테고리를 입력 하세요 : ");
-        String newbcategory = scanner.nextLine();
+        String newbcategory = setStr();
         // bcategory 받고 카테고리 디비에서 검색 후 카테고리 번호를 리턴
         int categoryNo = bookService.categorySearch(newbcategory);
         if (categoryNo == 0) {
@@ -180,10 +178,10 @@ public class BookController {
     }
     public void addBooks() {
         System.out.print("제목을 입력하세요 : ");
-        String btitle = scanner.nextLine();
+        String btitle = setStr();
 
         System.out.print("작가를 입력 하세요 : ");
-        String bauthor = scanner.nextLine();
+        String bauthor = setStr();
             // bauthor 받고 작가 디비에서 검색 후 작가 번호를 리턴
         int authorNo1 = bookService.authorSearch(bauthor);
         if (authorNo1 == 0) {
@@ -192,7 +190,7 @@ public class BookController {
         }
 
         System.out.print("출판사를 입력하세요 : ");
-        String bpublisher = scanner.nextLine();
+        String bpublisher = setStr();
             // bpublisher 받고 출판사 디비에서 검색 후 출판사 번호를 리턴
         int publisherNo = bookService.publisherSearch(bpublisher);
         if (publisherNo == 0) {
@@ -201,7 +199,7 @@ public class BookController {
         }
 
         System.out.print("카테고리를 입력 하세요 : ");
-        String bcategory = scanner.nextLine();
+        String bcategory = setStr();
         // bcategory 받고 카테고리 디비에서 검색 후 카테고리 번호를 리턴
         int categoryNo = bookService.categorySearch(bcategory);
         if (categoryNo == 0) {
@@ -209,13 +207,45 @@ public class BookController {
             return;
         }
         System.out.print("몇권 인가요? : ");
-        int books = scanner.nextInt();
+        int books = setInteger();
 
         for(int i=0; i<books ; i++){
             bookService.addBook(btitle, authorNo1, publisherNo, categoryNo);
         }
 
         System.out.println("도서가 추가되었습니다.");
+    }
+
+    private String setStr(){
+        try {
+            String aname = scanner.nextLine();
+            if(aname.isEmpty()){
+                System.out.println("올바른 값을 입력 바랍니다.");
+                return null;
+            }
+            return aname;
+        }catch (Exception e){
+            System.out.println("올바른 값을 입력 바랍니다.");
+        }
+        return null;
+    }
+
+
+
+    // 정수를 입력해 달라고 루프걸기
+    private int setInteger(){
+        try {
+            String ano = scanner.nextLine();
+            if(ano.isEmpty()){
+                System.out.println("올바른 값을 입력 바랍니다.");
+                return 0;
+            }
+            Integer a = Integer.parseInt(ano);
+            return a;
+        }catch (Exception e){
+            System.out.println("올바른 값을 입력 바랍니다.");
+            return 0;
+        }
     }
 
     /*
@@ -226,7 +256,7 @@ public class BookController {
         boolean isRunning = true;
 
         while (isRunning) {
-            System.out.println("\n1. 책명으로 검색\n2. 저자로 검색\n3. 출판사로 검색\n4.검색종료");
+            System.out.println("\n1. 책명으로 검색\n2. 저자로 검색\n3. 출판사로 검색\n4. 검색종료");
                 int choice = safelyGetIntInput();
                 try{
                     switch (choice) {

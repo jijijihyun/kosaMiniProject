@@ -15,14 +15,15 @@ public class ReviewDAO {
     public boolean isValidBook(String bookTitle) throws SQLException {
         String sql = "SELECT * FROM Books WHERE Title = ?";
 
-        try (Connection conn = DBUtils.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try(Connection conn = DBUtils.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, bookTitle);
 
             ResultSet rs = pstmt.executeQuery();
 
             return rs.next();
-        } catch (Exception e) {
+        }
+        catch(Exception e){
             e.printStackTrace();
             return false;
         }

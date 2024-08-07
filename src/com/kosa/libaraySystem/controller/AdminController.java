@@ -8,35 +8,32 @@ public class AdminController {
     public void showAdminMenu() {
         while(true) {
             System.out.println("\n------     관리자 메뉴     ------");
-            System.out.println("[1] 사용자 관리");
-            System.out.println("[2] 도서 관리");
-            System.out.println("[3] 카테고리 관리");
-            System.out.println("[4] 작가 관리");
-            System.out.println("[5] 출핀사 관리");
-            System.out.println("[6] 로그아웃");
+            System.out.println("[1] 도서 관리");
+            System.out.println("[2] 카테고리 관리");
+            System.out.println("[3] 작가 관리");
+            System.out.println("[4] 출핀사 관리");
+            System.out.println("[5] 로그아웃");
             System.out.print(">> ");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
 
-            // 20240805 수정
+            // 20240805 수정\
+            // 김남영 메뉴 수정
             switch(choice) {
                 case 1 :
-                    new UserController().manageUsers();
-                    break;
-                case 2 :
                     new BookController().manageBooks();
                     break;
-                case 3 :
+                case 2 :
                     new CategoryController().manageCategories();
                     break;
-                case 4 :
+                case 3 :
                     new AuthorController().manageAuthor();
                     break;
-                case 5 :
+                case 4 :
                     new PublisherController().managePublishers();
                     break;
-                case 6 :
+                case 5 :
                     System.out.println("로그아웃 되었습니다.");
                     return;
                 default :
