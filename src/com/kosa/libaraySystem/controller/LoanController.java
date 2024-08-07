@@ -173,12 +173,13 @@ public class LoanController {
             return;
         }
         else{
-            System.out.println(" ✅ 다음 중 대출하고자 하는 도서명의 번호를 선택해주세요. ");
+            System.out.println(" ✅ 다음 중 대출하고자 하는 도서명의 번호를 선택해주세요.");
             showlikeBookList(likebooks);
             stepNum = scanner.nextInt();
             scanner.nextLine();  // 개행 문자 소비
 
             targetBookTitle = likebooks.get(stepNum-1).getBookTitle();
+
         }
 
         //번호 선택해서 리스트에서 어떤 도서명을 선택할지 확실하게 정한뒤
@@ -197,8 +198,7 @@ public class LoanController {
             else{
                 System.out.println(" ✅ 다음 중 대출하고자 하는 도서의 번호를 골라주세요. ");
                 showRealBookList(books);
-                stepNum = scanner.nextInt();
-                scanner.nextLine();  // 개행 문자 소비
+                stepNum = Integer.parseInt(scanner.nextLine());  // 개행 문자 소비
             }
             if(books.get(stepNum-1).getStatus().equals("대출중")){
                 System.out.println(" \uD83D\uDED1 해당 도서는 대출이 불가합니다.");
@@ -260,8 +260,11 @@ public class LoanController {
             for(Book b: books){
                 TupleKNY<String,String> categoriesName =
                         categoryService.getHierarchyCategory(categoryService.getCategoryByCategoryNo(b.getCategoryNo()));
+
                 String bigCateName = categoriesName.getKey();
+
                 String smallCateName = categoriesName.getValue();
+
                 System.out.printf("%-5d %-40s  %-10s  %-15s %-15s  %-10s  %s\n",
                         idx++,
                         b.getTitle(),

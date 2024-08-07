@@ -31,10 +31,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     public TupleKNY<String, String> getHierarchyCategory(Category c){
-        if(c.getParentNo() == null){
+
+        if(c.getParentNo()==null){
+
             return new TupleKNY<String,String>(c.getName(), "-");
         }
         else{
+
             try{
                 return new TupleKNY<String,String>(getCategoryByCategoryNo(c.getParentNo()).getName(), c.getName());
             }catch(Exception e){
