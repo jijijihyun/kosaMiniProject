@@ -10,7 +10,7 @@ public interface CategoryService {
     public String getCategoryNameByNum(int cateNum);
 
     public List<Category> getSubCategoriesByParentNum(int parentNo);
-    public Category getCategoryByName(String name);
+    public Category getCategoryByName(String name) throws SQLException;
     Category getCategoryByCategoryNo(int num)throws SQLException;
     public TupleKNY<String, String> getHierarchyCategory(Category c);
 

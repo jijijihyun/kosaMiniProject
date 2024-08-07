@@ -212,7 +212,7 @@ public class LoanController {
         //대출 실행 ㄱㄱ
 
     }
-    private void showlikeBookList(List<BookGrouped> bg){
+    private void showlikeBookList(List<BookGrouped> bg) throws SQLException {
         if(bg.isEmpty())
         {
             System.out.println("\n해당 책은 없습니다.");

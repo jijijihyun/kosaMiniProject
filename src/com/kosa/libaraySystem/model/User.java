@@ -1,13 +1,7 @@
 package com.kosa.libaraySystem.model;
 
-import lombok.*;
-
 import java.util.Scanner;
 
-@Data
-@Getter
-@Setter
-@NoArgsConstructor
 public class User {
     private int userNo;
     private String userId;

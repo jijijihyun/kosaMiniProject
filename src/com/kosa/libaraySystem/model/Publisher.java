@@ -1,14 +1,18 @@
 package com.kosa.libaraySystem.model;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
-@AllArgsConstructor
 public class Publisher {
 
     int publisherNo;
     String name;
+
+    public Publisher(int publisherNo, String name) {
+        this.publisherNo = publisherNo;
+        this.name = name;
+    }
+
+    public Publisher() {
+
+    }
 
     public int getPublisherNo() {
         return publisherNo;

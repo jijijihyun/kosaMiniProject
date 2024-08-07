@@ -307,7 +307,7 @@ public class BookController {
     }
 
     //단순 반복코드 도서 출력부로직만 따로
-    private void showBookListUser(List<BookGrouped> bg){
+    private void showBookListUser(List<BookGrouped> bg) throws SQLException {
         if(bg.isEmpty())
         {
             System.out.println("\n해당 책은 없습니다.");
@@ -333,7 +333,7 @@ public class BookController {
     }
 
     //일단 카테고리명
-    public void searchBooksByCategory() {
+    public void searchBooksByCategory() throws SQLException {
         System.out.print("조회할 도서의 카테고리명을 입력하세요: ");
         String categoryName = scanner.nextLine();
 

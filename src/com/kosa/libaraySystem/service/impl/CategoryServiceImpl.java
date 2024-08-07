@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class CategoryServiceImpl implements CategoryService {
-    CategoryDAO categoryDAO = new CategoryDAO();
+    private CategoryDAO categoryDAO = new CategoryDAO();
     @Override
     public String getCategoryNameByNum(int cateNum) {
         return categoryDAO.getCategoryNameByNumSelect(cateNum);
@@ -21,7 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category getCategoryByName(String name) {
+    public Category getCategoryByName(String name) throws SQLException {
         return categoryDAO.getCategoryClassByNameSelect(name);
     }
 
@@ -31,7 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     public TupleKNY<String, String> getHierarchyCategory(Category c){
-        if(c.getParentNo() == 0){
+        if(c.getParentNo() == null){
             return new TupleKNY<String,String>(c.getName(), "-");
         }
         else{

@@ -51,25 +51,23 @@ public class CategoryDAO {
         return categories;
     }
 
-    public Category getCategoryClassByNameSelect(String name) {
-        Category c = new Category();
-        String sql = "SELECT c.categoryNo, c.name, c.parentNo FROM Categories c WHERE name = ?";
+    public Category getCategoryClassByNameSelect(String name) throws SQLException {
+        String sql = "SELECT * FROM categories WHERE name = ?";
 
-        try (Connection connection = DBUtils.getConnection();
-             PreparedStatement preStat = connection.prepareStatement(sql)) {
+        try(Connection conn = DBUtils.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, name);
 
-            preStat.setString(1, name);
-            ResultSet resultSet = preStat.executeQuery();
-
-            if (resultSet.next()) {
-                c.setCategoryNo(resultSet.getInt("categoryNo"));
-                c.setName(resultSet.getString("name"));
-                c.setParentNo(resultSet.getInt("parentNo"));
+            try(ResultSet rs = pstmt.executeQuery()) {
+                if(rs.next()) {
+                    return new Category(rs.getInt("categoryNo"),
+                            rs.getString("name"),
+                            rs.getObject("parentNo") != null ? rs.getInt("parentNo") : null);
+                } else {
+                    return null;
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return c;
     }
 
     public Category selectCategoryByCategoryNo(int num) throws SQLException {
