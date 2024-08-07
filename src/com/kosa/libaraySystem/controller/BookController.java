@@ -18,45 +18,47 @@ public class BookController {
     private PublisherService publisherService = new PublisherServiceImpl();
 
     // 도서 관리 메뉴
-    public void manageBooks() {
-        System.out.println("\n------     도서 관리     ------");
-        System.out.println("[1] 도서 추가");
-        System.out.println("[2] 도서 정보 수정");
-        System.out.println("[3] 도서 삭제");
-        System.out.println("[4] 도서 정보 조회");
-        System.out.println("[5] 뒤로가기");
-        System.out.print(">> ");
+    public void manageBooks() throws SQLException {
+        while (true) {
+            System.out.println("\n------     도서 관리     ------");
+            System.out.println("[1] 도서 추가");
+            System.out.println("[2] 도서 정보 수정");
+            System.out.println("[3] 도서 삭제");
+            System.out.println("[4] 도서 정보 조회");
+            System.out.println("[5] 뒤로가기");
+            System.out.print(">> ");
 
-        int choice =setInteger();
+            int choice = setInteger();
 
-        switch (choice) {
-            case 1:
-                // 도서 추가
-                addBooks();
-                break;
-            case 2:
-                // 도서 정보 수정
-                updateBooks();
-                break;
-            case 3:
-                // 도서 삭제
-                deleteBooks();
-                break;
-            case 4:
-                // 도서 정보 조회
-                searchBooks();
-                break;
-            case 5:
-                System.out.println("이전 메뉴로 이동합니다.");
-                return;
-            default:
-                System.out.println("잘못된 선택입니다.");
+            switch (choice) {
+                case 1:
+                    // 도서 추가
+                    addBooks();
+                    break;
+                case 2:
+                    // 도서 정보 수정
+                    updateBooks();
+                    break;
+                case 3:
+                    // 도서 삭제
+                    deleteBooks();
+                    break;
+                case 4:
+                    // 도서 정보 조회
+                    searchBooks1();
+                    break;
+                case 5:
+                    System.out.println("이전 메뉴로 이동합니다.");
+                    return;
+                default:
+                    System.out.println("잘못된 선택입니다.");
+            }
         }
     }
 
     private void deleteBooks() {
         // 제목을 입력 받아서 책 재목이 같은 책이 있으면  정보를 전부 출력 후 트루 반환 같은 책이 없으면 펄스 반환. 반환값은 b에 저장
-        boolean b = searchBooks();
+        boolean b = searchBooks1();
         // b가 진실이면 계속 진행하고 b가 거짓이면  현재 메소드를 바로 종료
         if (b == false) {
             return;
@@ -72,12 +74,12 @@ public class BookController {
             System.out.println("도서 번호를 찾을 수 없습니다.");
             return;
         }
-        scanner.nextLine();
+
         bookService.deleteBookByTitle(bookNo);
         System.out.println("도서가 삭제되었습니다.");
     }
 
-    private boolean searchBooks() {
+    private boolean searchBooks1() {
         System.out.print("조회할 도서의 제목을 입력하세요: ");
         String title = setStr();
         List<Book> book = bookService.searchBookByTitle(title);
@@ -120,7 +122,7 @@ public class BookController {
     private void updateBooks() {
 
 
-        boolean b = searchBooks();
+        boolean b = searchBooks1();
         // searchBooks(); 안될 경우 바로 종료
         if (b == false) {
             return;
@@ -140,7 +142,7 @@ public class BookController {
             return;
         }
 
-        scanner.nextLine();
+
         System.out.print("새로운 제목을 입력하세요: ");
         String newTitle = setStr();
 
@@ -177,11 +179,15 @@ public class BookController {
 
     }
     public void addBooks() {
+        System.out.println("\n------     도서 추가     ------");
+        System.out.println("🔎      추가할 도서 정보      🔎");
 
-        System.out.print("제목을 입력하세요 : ");
+        System.out.println("도서 제목");
+        System.out.print(">> ");
         String btitle = setStr();
 
-        System.out.print("작가를 입력 하세요 : ");
+        System.out.println("저자명");
+        System.out.print(">> ");
         String bauthor = setStr();
             // bauthor 받고 작가 디비에서 검색 후 작가 번호를 리턴
         int authorNo1 = bookService.authorSearch(bauthor);
@@ -190,7 +196,8 @@ public class BookController {
             return;
         }
 
-        System.out.print("출판사를 입력하세요 : ");
+        System.out.println("출판사명");
+        System.out.print(">> ");
         String bpublisher = setStr();
             // bpublisher 받고 출판사 디비에서 검색 후 출판사 번호를 리턴
         int publisherNo = bookService.publisherSearch(bpublisher);
@@ -199,7 +206,8 @@ public class BookController {
             return;
         }
 
-        System.out.print("카테고리를 입력 하세요 : ");
+        System.out.println("카테고리명");
+        System.out.print(">> ");
         String bcategory = setStr();
         // bcategory 받고 카테고리 디비에서 검색 후 카테고리 번호를 리턴
         int categoryNo = bookService.categorySearch(bcategory);
@@ -249,6 +257,9 @@ public class BookController {
         }
     }
 
+    /*
+
+     */
     /*
     ==================이하 유저 기능에 필요한 내용들=====================
      */

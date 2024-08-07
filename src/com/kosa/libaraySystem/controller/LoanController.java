@@ -239,7 +239,14 @@ public class LoanController {
         }
     }
     private String formatString(String str, int maxLength) {
-        return str.length() > maxLength ? str.substring(0, maxLength - 3) + "..." : str;
+        try {
+            if(str.isEmpty() || str.isBlank() || str.equals(null))  return "-";
+            if (str.length() > maxLength) return str.substring(0, maxLength - 3) + "...";
+            return str;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return "-";
     }
     private void showRealBookList(List<Book> books) throws SQLException {
         if(books.isEmpty())
