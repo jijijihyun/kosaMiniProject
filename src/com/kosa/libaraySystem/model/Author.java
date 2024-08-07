@@ -1,13 +1,7 @@
 package com.kosa.libaraySystem.model;
 
 
-import lombok.*;
 
-@Data
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Author {
     private int authorNo;
     private String authorName;

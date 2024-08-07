@@ -1,7 +1,6 @@
 package com.kosa.libaraySystem.model;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+
 
 
 public class Category {
