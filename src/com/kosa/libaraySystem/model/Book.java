@@ -1,8 +1,5 @@
 package com.kosa.libaraySystem.model;
 
-
-import lombok.*;
-
 public class Book {
 
     private int bookNo;
