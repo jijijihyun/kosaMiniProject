@@ -326,14 +326,15 @@ public class BookController {
             System.out.println("\n ✖\uFE0F 해당 책은 없습니다.");
         }
         else{
-            System.out.printf("\n%-40s  %-10s  %-15s %-15s %-10s  %s\n","책명", "작가", "대분류", "소분류", "출판사", "권수");
+            System.out.printf("\n+----------------------------------------+----------+---------------+---------------+----------+-----+%n");
+            System.out.printf("|%-40s|%-10s|%-15s|%-15s|%-10s|%-5s|\n","책명", "작가", "대분류","소분류", "출판사", "권수");
             //책정보가지고 출력하는 함수들 호출
             for(BookGrouped b: bg){
                 TupleKNY<String,String> categoriesName =
                 categoryService.getHierarchyCategory(categoryService.getCategoryByName(b.getCategoryName()));
                 String bigCateName = categoriesName.getKey();
                 String smallCateName = categoriesName.getValue();
-                System.out.printf("%-40s  %-10s  %-15s %-15s %-10s  %3d\n",
+                System.out.printf("|%-40s|%-10s|%-15s|%-15s|%-10s|%5d\n",
                         b.getBookTitle(),
                         formatString(b.getAuthorName(), 10),
                         formatString(bigCateName, 15),
@@ -342,6 +343,7 @@ public class BookController {
                         b.getCnt()
                 );
             }
+            System.out.printf("+----------------------------------------+----------+---------------+---------------+----------+-----+%n");
         }
     }
 

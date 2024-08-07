@@ -159,6 +159,7 @@ public class LoanController {
                     smallCateName,
                     loans.get(i).getLoanDate(), dueDate);
         }
+        System.out.printf("+-----+----------------------------------------+----------+---------------+---------------+----------+----------+%n");
     }
 
 
@@ -239,6 +240,7 @@ public class LoanController {
                         b.getCnt()
                 );
             }
+            System.out.printf("+-----+----------------------------------------+----------+---------------+---------------+----------+-----+%n");
         }
     }
     private String formatString(String str, int maxLength) {
@@ -280,6 +282,7 @@ public class LoanController {
                         b.getStatus()
                 );
             }
+            System.out.printf("+-----+----------------------------------------+----------+---------------+---------------+----------+----------+%n");
         }
     }
 

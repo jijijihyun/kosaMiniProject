@@ -1,8 +1,11 @@
 package com.kosa.libaraySystem.model;
 
+import com.kosa.libaraySystem.service.CategoryService;
+import com.kosa.libaraySystem.service.impl.CategoryServiceImpl;
+import com.kosa.libaraySystem.util.TupleKNY;
+
+import java.sql.SQLException;
 import java.util.List;
-import java.kosa.libaraySystem.service.*;
-import java.kosa.libaraySystem.util.*;
 
 public class BookGrouped {
     private Book book;
@@ -79,7 +82,8 @@ public class BookGrouped {
     }
 
     //단순 반복코드 도서 출력부로직만 따로
-    public void showBookGroupedInfoUser(){
+    public void showBookGroupedInfoUser() throws SQLException {
+        CategoryService categoryService = new CategoryServiceImpl();
         TupleKNY<String,String> categoriesName =
             categoryService.getHierarchyCategory(categoryService.getCategoryByName(this.getCategoryName()));
         String bigCateName = categoriesName.getKey();

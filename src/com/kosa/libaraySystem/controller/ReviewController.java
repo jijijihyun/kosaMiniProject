@@ -59,9 +59,10 @@ public class ReviewController {
                         System.out.printf("\n+-----+----------------------------------------+----------+---------------+---------------+----------+-----+%n");
                         System.out.printf("|%-5s|%-40s|%-10s|%-15s|%-15s|%-10s|%-5s|\n", "번호","책명", "작가", "대분류","소분류", "출판사", "권수");
                         for(int i=1; i<=books1.size(); i++){
-                            System.out.printf("%-5d", i);
+                            System.out.printf("|%-5d", i);
                             books1.get(i-1).showBookGroupedInfoUser();
                         }
+                        System.out.printf("+-----+----------------------------------------+----------+---------------+---------------+----------+-----+%n");
                     System.out.println("\n ✍\uFE0F 리뷰를 등록하고 싶은 책의 번호를 입력하세요");
                     try {
                         userChoice1 = user.safeGetIntInput();
@@ -116,11 +117,13 @@ public class ReviewController {
                         // 해당 그룹도서에 해당하는 리뷰에 접근 리뷰 리스트를 뿌릴거다.
                         //만약 숫자가 아니라면 try catch 에러 메시지 뿌리고 반복문 진입
                         System.out.printf("\n+-----+----------------------------------------+----------+---------------+---------------+----------+-----+%n");
-                        System.out.printf("|%-5s|%-40s|%-10s|%-15s|%-15s|%-10s|%-5s|\n", "번호","책명", "작가", "대분류","소분류", "출판사", "권수")
+                        System.out.printf("|%-5s|%-40s|%-10s|%-15s|%-15s|%-10s|%-5s|\n", "번호","책명", "작가", "대분류","소분류", "출판사", "권수");
                         for(int i=1; i<=books.size(); i++){
-                            System.out.printf("%-5d", i);
+                            System.out.printf("|%-5d", i);
                             books.get(i-1).showBookGroupedInfoUser();
                         }
+                        System.out.printf("+-----+----------------------------------------+----------+---------------+---------------+----------+-----+%n");
+
                         System.out.println("\n ✍\uFE0F 리뷰를 확인하고 싶은 책의 번호를 입력하세요");
                         try {
                             userChoice = user.safeGetIntInput();
@@ -170,9 +173,9 @@ public class ReviewController {
                     "유저이름", userService.getUserInstanceDataByUserNo(r.getUserNo()).getUsername(),
                     "등록일자", r.getReviewDate());
             System.out.printf("+---------------+-------------------------+-------------------------+-------------------------+%n");
-            System.out.println("+-----------리뷰내용-----------+");
-            System.out.println(addLineBreaks(r.getReviewText(), 30));
-            System.out.println("+------------------------------+");
+            System.out.println("+-------------------------------리뷰내용-------------------------------+");
+            System.out.println(addLineBreaks(r.getReviewText(), 70));
+            System.out.println("+----------------------------------------------------------------------+");
         }
     }
     public String addLineBreaks(String text, int lineLength) {
