@@ -56,8 +56,8 @@ public class ReviewController {
                         //도서리스트를 쫙 뿌려주고, 사용자 입력을 받아서 사용자 입력이 숫자라면
                         // 해당 그룹도서에 해당하는 리뷰에 접근 리뷰 리스트를 뿌릴거다.
                         //만약 숫자가 아니라면 try catch 에러 메시지 뿌리고 반복문 진입
-
-                        System.out.printf("\n%-5s %-40s  %-10s  %-15s  %-10s  %s\n","Num","Title", "Author", "Category", "Publisher", "Count");
+                        System.out.printf("\n+-----+----------------------------------------+----------+---------------+---------------+----------+-----+%n");
+                        System.out.printf("|%-5s|%-40s|%-10s|%-15s|%-15s|%-10s|%-5s|\n", "번호","책명", "작가", "대분류","소분류", "출판사", "권수");
                         for(int i=1; i<=books1.size(); i++){
                             System.out.printf("%-5d", i);
                             books1.get(i-1).showBookGroupedInfoUser();
@@ -115,8 +115,8 @@ public class ReviewController {
                         //도서리스트를 쫙 뿌려주고, 사용자 입력을 받아서 사용자 입력이 숫자라면
                         // 해당 그룹도서에 해당하는 리뷰에 접근 리뷰 리스트를 뿌릴거다.
                         //만약 숫자가 아니라면 try catch 에러 메시지 뿌리고 반복문 진입
-
-                        System.out.printf("\n%-5s %-40s  %-10s  %-15s  %-10s  %s\n","Num","Title", "Author", "Category", "Publisher", "Count");
+                        System.out.printf("\n+-----+----------------------------------------+----------+---------------+---------------+----------+-----+%n");
+                        System.out.printf("|%-5s|%-40s|%-10s|%-15s|%-15s|%-10s|%-5s|\n", "번호","책명", "작가", "대분류","소분류", "출판사", "권수")
                         for(int i=1; i<=books.size(); i++){
                             System.out.printf("%-5d", i);
                             books.get(i-1).showBookGroupedInfoUser();
@@ -163,13 +163,16 @@ public class ReviewController {
         System.out.printf("\n \uD83E\uDEB6 ====%s 의 리뷰 리스트 ====\n", bookTitle);
 
         for(Review r : reviews){
-            System.out.printf("\n%s: %-10s  %s: %-10s  %s: %-10s  %s: %-10s\n",
+            System.out.printf("\n+---------------+-------------------------+-------------------------+-------------------------+%n");
+            System.out.printf("|%-10s:%4s|%-10s:%14s|%-10s:%14s|%-10s:%14s|\n",
                     "리뷰번호", r.getReviewNo(),
                     "유저ID", userService.getUserInstanceDataByUserNo(r.getUserNo()).getUserId(),
                     "유저이름", userService.getUserInstanceDataByUserNo(r.getUserNo()).getUsername(),
                     "등록일자", r.getReviewDate());
-            System.out.println(" \uD83D\uDCD6 --- 리뷰 내용 ---");
+            System.out.printf("+---------------+-------------------------+-------------------------+-------------------------+%n");
+            System.out.println("+-----------리뷰내용-----------+");
             System.out.println(addLineBreaks(r.getReviewText(), 30));
+            System.out.println("+------------------------------+");
         }
     }
     public String addLineBreaks(String text, int lineLength) {
@@ -188,8 +191,12 @@ public class ReviewController {
                 }
             }
 
+            //땜빵 추가
+            result.append("|");
             // 해당 줄을 결과에 추가
-            result.append(text, start, end).append(System.lineSeparator());
+            result.append(text, start, end);
+            result.append("|");
+            result.append(System.lineSeparator());
             start = end + 1; // 다음 줄의 시작 지점으로 이동 (공백 한 칸 넘어감)
         }
 
