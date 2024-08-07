@@ -24,4 +24,9 @@ public class UserServiceImpl implements UserService {
         user.setPassword(PasswordUtil.hashPassword(user.getPassword()));
         userDAO.addUser(user);
     }
+
+    @Override
+    public User getUserInstanceDataByUserNo(int num) throws SQLException {
+        return userDAO.getUserByUserNo(num);
+    }
 }

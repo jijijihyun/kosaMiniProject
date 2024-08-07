@@ -2,6 +2,8 @@ package com.kosa.libaraySystem.model;
 
 import lombok.*;
 
+import java.util.Scanner;
+
 @Data
 @Getter
 @Setter
@@ -69,5 +71,19 @@ public class User {
 
     public void setRoleNo(int roleNo) {
         this.roleNo = roleNo;
+    }
+
+    //숫자 입력 안전 장치
+    public int safeGetIntInput(){
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            try {
+                String input = scanner.nextLine();
+                int number = Integer.parseInt(input);
+                return number;  // 입력 받은 숫자 반환
+            } catch (NumberFormatException e) {
+                System.out.println("제대로된 숫자를 입력해주세요");
+            }
+        }
     }
 }

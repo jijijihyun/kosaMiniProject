@@ -18,7 +18,7 @@ public class UserDAO {
 
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()) {
-                return new User(rs.getString("userId"), rs.getString("password"), rs.getString("username"), rs.getString("email"), rs.getInt("roleNo"));
+                return new User(rs.getInt("userNo"), rs.getString("userId"), rs.getString("password"), rs.getString("username"), rs.getString("email"), rs.getInt("roleNo"));
             }
 
         }
@@ -38,5 +38,22 @@ public class UserDAO {
             pstmt.setInt(5, user.getRoleNo());
             pstmt.executeUpdate();
         }
+    }
+
+    public User getUserByUserNo(int num) throws SQLException{
+        String sql = "SELECT * FROM Users WHERE userNo = ?";
+
+        try(Connection conn = DBUtils.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, num);
+
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                return new User(rs.getInt(1), rs.getString("userId"), rs.getString("password"), rs.getString("username"), rs.getString("email"), rs.getInt("roleNo"));
+            }
+
+        }
+
+        return null;
     }
 }

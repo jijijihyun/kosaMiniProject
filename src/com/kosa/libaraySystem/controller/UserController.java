@@ -27,44 +27,40 @@ public class UserController {
                 new AdminController().showAdminMenu();
             } else {
                 // 사용자 메뉴
-                new UserController().showUserMenu();
+                new UserController().showUserMenu(user);
             }
         } else {
             System.out.println("로그인 실패!!! 사용자 ID 또는 비밀번호가 잘못되었습니다.");
         }
     }
 
-    public void showUserMenu() {
+    public void showUserMenu(User user) throws SQLException {
         while(true) {
             System.out.println("\n------     사용자 메뉴     ------");
             System.out.println("[1] 도서 검색");
-            System.out.println("[2] 대출 기록 조회");
-            System.out.println("[3] 리뷰 작성");
-            System.out.println("[4] 도서 대출");
-            System.out.println("[5] 도서 반납");
-            System.out.println("[6] 로그아웃");
+            System.out.println("[2] 리뷰 작성");
+            System.out.println("[3] 도서 대출");
+            System.out.println("[4] 도서 반납");
+            System.out.println("[5] 로그아웃");
             System.out.print(">> ");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = user.safeGetIntInput();
+            //scanner.nextLine();
 
             switch(choice) {
                 case 1 :
-//                    new BookController().searchBooks();
+                    new BookController().userSearchBook(user);
                     break;
                 case 2 :
-//                    new LoanController().viewLoanRecords();
+                    new ReviewController().reviewControl(user);
                     break;
                 case 3 :
-//                    new ReviewController().writeReview();
+                    new LoanController().startLoanProcess(user);
                     break;
                 case 4 :
-
+                    new LoanController().startReturnProcess(user);
                     break;
                 case 5 :
-
-                    break;
-                case 6 :
                     System.out.println("로그아웃 되었습니다.");
                     return;
                 default :
@@ -104,7 +100,7 @@ public class UserController {
 
         System.out.println("역할 (1: 관리자, 2: 사용자)");
         System.out.print(">> ");
-        int roleNo = scanner.nextInt();
+        int roleNo = new User().safeGetIntInput();
         scanner.nextLine();
 
         User user = new User(userId, password, username, email, roleNo);
@@ -131,4 +127,8 @@ public class UserController {
     private boolean isValidEmail(String email) {
         return Pattern.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", email);
     }
+
+    public void manageUsers() {
+    }
+
 }

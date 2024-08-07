@@ -1,6 +1,7 @@
 package com.kosa.libaraySystem;
 
 import com.kosa.libaraySystem.controller.UserController;
+import com.kosa.libaraySystem.model.User;
 
 import java.sql.*;
 import java.util.Scanner;
@@ -11,13 +12,14 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
         while(true) {
+            System.out.println("\n-\uD83D\uDCCC-\uD83D\uDC97---- 변경점 ------");
             System.out.println("\n------ KOSA 도서 관리 시스템 ------");
             System.out.println("[1] 로그인");
             System.out.println("[2] 회원가입");
             System.out.println("[3] 종료");
             System.out.print(">> ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = new User().safeGetIntInput();
+            //scanner.nextLine();
 
             switch (choice) {
                 case 1:
