@@ -142,7 +142,8 @@ public class LoanController {
     private void showUserLoanList(List<Book> books, List<BookLoanInfo> loans, User user) throws SQLException {
         System.out.printf("\n==== 유저: %-10s( %s ) 님의 도서 대출 리스트===\n", user.getUserId(), user.getUsername());
         //  도서번호/책제목/작가/카테고리/대출일/반납기한
-        System.out.printf("%-5s %-40s  %-10s  %-15s %-15s  %-10s  %-10s\n", "번호","책 제목", "작가", "대분류", "소분류", "대출일", "반납기한");
+        System.out.printf("\n+-----+----------------------------------------+----------+---------------+---------------+----------+----------+%n");
+        System.out.printf("|%-5s|%-40s|%-10s|%-15s|%-15s|%-10s|%-10s|\n", "번호","책 제목", "작가", "대분류", "소분류", "대출일", "반납기한");
         for(int i =0; i< loans.size(); i++){
             TupleKNY<String,String> categoriesName =
                     categoryService.getHierarchyCategory(categoryService.getCategoryByCategoryNo(books.get(i).getCategoryNo()));
@@ -151,7 +152,7 @@ public class LoanController {
 
             LocalDate loanDatelocal = loans.get(i).getLoanDate().toLocalDate();
             Date dueDate = Date.valueOf(loanDatelocal.plusDays(7));
-            System.out.printf("%-5d %-40s  %-10s  %-15s %-15s %-10s  %-10s\n",
+            System.out.printf("|%-5d|%-40s|%-10s|%-15s|%-15s|%-10s|%-10s|\n",
                     loans.get(i).getBookNo(), books.get(i).getTitle(),
                     authorService.getAuthorNameByNum(books.get(i).getAuthorNo()),
                     bigCateName,
@@ -219,14 +220,16 @@ public class LoanController {
         }
         else{
             int idx = 1;
-            System.out.printf("\n%-5s %-40s  %-10s  %-15s %-15s %-10s  %s\n", "번호","책명", "작가", "대분류","소분류", "출판사", "권수");
+            System.out.printf("\n+-----+----------------------------------------+----------+---------------+---------------+----------+-----+%n");
+
+            System.out.printf("|%-5s|%-40s|%-10s|%-15s|%-15s|%-10s|%-5s|\n", "번호","책명", "작가", "대분류","소분류", "출판사", "권수");
             //책정보가지고 출력하는 함수들 호출
             for(BookGrouped b: bg){
                 TupleKNY<String,String> categoriesName =
                         categoryService.getHierarchyCategory(categoryService.getCategoryByName(b.getCategoryName()));
                 String bigCateName = categoriesName.getKey();
                 String smallCateName = categoriesName.getValue();
-                System.out.printf("%-5d %-40s  %-10s  %-15s %-15s  %-10s  %3d\n",
+                System.out.printf("|%-5d|%-40s|%-10s|%-15s|%-15s|%-10s|%-5d|\n",
                         idx++,
                         b.getBookTitle(),
                         formatString(b.getAuthorName(), 10),
@@ -255,7 +258,9 @@ public class LoanController {
         }
         else{
             int idx = 1;
-            System.out.printf("\n%-5s %-40s  %-10s  %-15s %-15s %-10s  %s\n", "번호","책명", "작가", "대분류", "소분류", "출판사", "대출여부");
+            System.out.printf("\n+-----+----------------------------------------+----------+---------------+---------------+----------+----------+%n");
+
+            System.out.printf("|%-5s|%-40s|%-10s|%-15s|%-15s|%-10s|%-10s\n", "번호","책명", "작가", "대분류", "소분류", "출판사", "대출여부");
             //책정보가지고 출력하는 함수들 호출
             for(Book b: books){
                 TupleKNY<String,String> categoriesName =
@@ -265,7 +270,7 @@ public class LoanController {
 
                 String smallCateName = categoriesName.getValue();
 
-                System.out.printf("%-5d %-40s  %-10s  %-15s %-15s  %-10s  %s\n",
+                System.out.printf("|%-5d|%-40s|%-10s|%-15s|%-15s|%-10s|%-10s\n",
                         idx++,
                         b.getTitle(),
                         formatString(authorService.getAuthorNameByNum(b.getAuthorNo()), 10),
