@@ -3,7 +3,6 @@ package com.kosa.libaraySystem.model;
 
 import java.util.Scanner;
 
-
 public class User {
     private int userNo;
     private String userId;

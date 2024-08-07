@@ -1,8 +1,6 @@
 package com.kosa.libaraySystem.model;
 
 
-
-
 public class Book {
 
     private int bookNo;

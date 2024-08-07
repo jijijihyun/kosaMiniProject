@@ -1,10 +1,18 @@
 package com.kosa.libaraySystem.model;
 
 
-
 public class Author {
     private int authorNo;
     private String authorName;
+
+    public Author(int authorNo, String authorName) {
+        this.authorNo = authorNo;
+        this.authorName = authorName;
+    }
+
+    public Author() {
+
+    }
 
     public int getAuthorNo() {
         return authorNo;
