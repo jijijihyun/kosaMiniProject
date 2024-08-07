@@ -257,12 +257,14 @@ public class BookController {
         boolean isRunning = true;
 
         while (isRunning) {
-            System.out.println("\n1. 책명으로 검색\n2. 저자로 검색\n3. 출판사로 검색\n4. 검색종료");
+
+            System.out.println("\n=== \uD83D\uDD0D 도서 검색 페이지 ===\n" +
+                    "[1] 책명으로 검색\n[2] 저자로 검색\n[3] 출판사로 검색\n[4] 검색종료");
                 int choice = safelyGetIntInput();
                 try{
                     switch (choice) {
                         case 1:
-                            System.out.println("\n책명을 입력하세요");
+                            System.out.println("\n ✍\uFE0F 책명을 입력하세요");
                             String bookTitle = scanner.nextLine();
 
                             //책 리스트 받을 공간 생성 후 받아
@@ -270,7 +272,7 @@ public class BookController {
                             showBookListUser(bookGroupeds);
                             break;
                         case 2:
-                            System.out.println("\n저자를 입력하세요");
+                            System.out.println("\n ✍\uFE0F 저자를 입력하세요");
                             String authorName = scanner.nextLine();
 
                             //책 리스트 받을 공간 생성 후 받아
@@ -278,7 +280,7 @@ public class BookController {
                             showBookListUser(bookGroupedByAuthor);
                             break;
                         case 3:
-                            System.out.println("\n출판사를 입력하세요");
+                            System.out.println("\n ✍\uFE0F 출판사를 입력하세요");
                             String pubName = scanner.nextLine();
 
                             //책 리스트 받을 공간 생성 후 받아
@@ -288,11 +290,11 @@ public class BookController {
                             break;
 
                         case 4:
-                            System.out.println("\n검색을 종료합니다.");
+                            System.out.println("\n \uD83D\uDD19 검색을 종료합니다.");
                             isRunning= false;
                             break;
                         default:
-                            System.out.println("\n유효하지 않은 입력입니다.");
+                            System.out.println("\n ⚠\uFE0F 유효하지 않은 입력입니다.");
                             break;
                     }
                 }catch(SQLException e){
@@ -310,7 +312,7 @@ public class BookController {
     private void showBookListUser(List<BookGrouped> bg) throws SQLException {
         if(bg.isEmpty())
         {
-            System.out.println("\n해당 책은 없습니다.");
+            System.out.println("\n ✖\uFE0F 해당 책은 없습니다.");
         }
         else{
             System.out.printf("\n%-40s  %-10s  %-15s %-15s %-10s  %s\n","책명", "작가", "대분류", "소분류", "출판사", "권수");
@@ -333,15 +335,17 @@ public class BookController {
     }
 
     //일단 카테고리명
-    public void searchBooksByCategory() throws SQLException {
-        System.out.print("조회할 도서의 카테고리명을 입력하세요: ");
+
+    public void searchBooksByCategory() {
+        System.out.print(" ✍\uFE0F 조회할 도서의 카테고리명을 입력하세요: ");
+
         String categoryName = scanner.nextLine();
 
         Category category = categoryService.getCategoryByName(categoryName);
         if (category != null) {
             displayListByCategoryNum(category.getCategoryNo());
         } else {
-            System.out.println("카테고리를 찾을 수 없습니다.");
+            System.out.println(" ⚠\uFE0F 카테고리를 찾을 수 없습니다.");
         }
     }
 
@@ -350,7 +354,7 @@ public class BookController {
         List<Category> subCategories = categoryService.getSubCategoriesByParentNum(categoryNo);
 
         if (!subCategories.isEmpty()) {
-            System.out.println("하위 카테고리의 번호를 선택하세요:");
+            System.out.println(" ✍\uFE0F 하위 카테고리의 번호를 선택하세요:");
             //하위 카테고리 리스트 출력
             for (int i = 0; i < subCategories.size(); i++) {
                 System.out.println((i + 1) + ". " + subCategories.get(i).getName());
@@ -362,7 +366,7 @@ public class BookController {
             if (choice > 0 && choice <= subCategories.size()) {
                 displayListByCategoryNum(subCategories.get(choice - 1).getCategoryNo());
             } else {
-                System.out.println("잘못된 선택입니다.");
+                System.out.println(" ⚠\uFE0F 잘못된 선택입니다.");
             }
         } else {
             try{
@@ -382,7 +386,7 @@ public class BookController {
                 int number = Integer.parseInt(input);
                 return number;  // 입력 받은 숫자 반환
             } catch (NumberFormatException e) {
-                System.out.println("제대로된 숫자를 입력해주세요");
+                System.out.println(" ⚠\uFE0F 제대로된 숫자를 입력해주세요");
             }
         }
     }

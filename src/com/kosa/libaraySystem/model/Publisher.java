@@ -1,5 +1,6 @@
 package com.kosa.libaraySystem.model;
 
+
 public class Publisher {
 
     int publisherNo;
@@ -28,5 +29,13 @@ public class Publisher {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Publisher(int publisherNo, String name) {
+        this.publisherNo = publisherNo;
+        this.name = name;
+    }
+
+    public Publisher() {
     }
 }

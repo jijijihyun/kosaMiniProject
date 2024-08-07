@@ -1,5 +1,6 @@
 package com.kosa.libaraySystem.model;
 
+
 import java.util.Scanner;
 
 public class User {
@@ -88,7 +89,7 @@ public class User {
                 int number = Integer.parseInt(input);
                 return number;  // 입력 받은 숫자 반환
             } catch (NumberFormatException e) {
-                System.out.println("제대로된 숫자를 입력해주세요");
+                System.out.println(" ⚠\uFE0F 제대로된 숫자를 입력해주세요");
             }
         }
     }

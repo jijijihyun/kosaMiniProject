@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBUtils {
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/localKosaMiniProject";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/kosaMiniProject";
     private static final String JDBC_ID = "kosa";
     private static final String JDBC_PASSWORD = "kosa123";
 
