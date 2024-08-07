@@ -1,6 +1,8 @@
 package com.kosa.libaraySystem.model;
 
 import java.util.List;
+import java.kosa.libaraySystem.service.*;
+import java.kosa.libaraySystem.util.*;
 
 public class BookGrouped {
     private Book book;
@@ -78,10 +80,15 @@ public class BookGrouped {
 
     //단순 반복코드 도서 출력부로직만 따로
     public void showBookGroupedInfoUser(){
-        System.out.printf("%-40s  %-10s  %-15s  %-10s  %3d\n",
+        TupleKNY<String,String> categoriesName =
+            categoryService.getHierarchyCategory(categoryService.getCategoryByName(this.getCategoryName()));
+        String bigCateName = categoriesName.getKey();
+        String smallCateName = categoriesName.getValue();
+        System.out.printf("|%-40s|%-10s|%-15s|%-15s|%-10s|%5d|\n",
                 this.getBookTitle(),
                 formatString(this.getAuthorName(), 10),
-                formatString(this.getCategoryName(), 15),
+                formatString(bigCateName, 15),
+                formatString(smallCateName, 15),
                 formatString(this.getPublisherName(), 10),
                 this.getCnt()
                 );
