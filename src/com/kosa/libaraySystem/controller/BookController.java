@@ -336,7 +336,7 @@ public class BookController {
 
     //일단 카테고리명
 
-    public void searchBooksByCategory() {
+    public void searchBooksByCategory() throws SQLException {
         System.out.print(" ✍\uFE0F 조회할 도서의 카테고리명을 입력하세요: ");
 
         String categoryName = scanner.nextLine();

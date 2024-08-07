@@ -31,11 +31,4 @@ public class Publisher {
         this.name = name;
     }
 
-    public Publisher(int publisherNo, String name) {
-        this.publisherNo = publisherNo;
-        this.name = name;
-    }
-
-    public Publisher() {
-    }
 }

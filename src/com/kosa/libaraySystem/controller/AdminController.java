@@ -1,11 +1,12 @@
 package com.kosa.libaraySystem.controller;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class AdminController {
     private Scanner scanner = new Scanner(System.in);
 
-    public void showAdminMenu() {
+    public void showAdminMenu() throws SQLException {
         while(true) {
             System.out.println("\n------     관리자 메뉴     ------");
             System.out.println("[1] 도서 관리");
