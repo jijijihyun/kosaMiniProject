@@ -3,11 +3,6 @@ package com.kosa.libaraySystem.model;
 
 import lombok.*;
 
-@Data
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Book {
 
     private int bookNo;
@@ -16,6 +11,19 @@ public class Book {
     private int publisherNo;
     private int categoryNo;
     private String status;
+
+    public Book() {
+
+    }
+
+    public Book(int bookNo, String title, int authorNo, int publisherNo, int categoryNo, String status) {
+        this.bookNo = bookNo;
+        this.title = title;
+        this.authorNo = authorNo;
+        this.publisherNo = publisherNo;
+        this.categoryNo = categoryNo;
+        this.status = status;
+    }
 
     public int getBookNo() {
         return bookNo;

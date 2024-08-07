@@ -13,14 +13,15 @@ public class UserController {
     private Scanner scanner = new Scanner(System.in);
 
     public void login() throws SQLException {
-        System.out.print("ID : ");
+        System.out.print("\nID : ");
         String userId = scanner.nextLine();
         System.out.print("비밀번호 : ");
         String password = scanner.nextLine();
+        System.out.println();
 
         User user = userService.login(userId, password);
         if(user != null) {
-            System.out.println("로그인 성공!!!");
+            System.out.println("📌로그인 성공!!!");
 
             if(user.getRoleNo() == 1) {
                 // 관리자 메뉴
@@ -30,7 +31,7 @@ public class UserController {
                 new UserController().showUserMenu(user);
             }
         } else {
-            System.out.println("로그인 실패!!! 사용자 ID 또는 비밀번호가 잘못되었습니다.");
+            System.out.println("🚫로그인 실패!!! 사용자 ID 또는 비밀번호가 잘못되었습니다.");
         }
     }
 
@@ -45,7 +46,6 @@ public class UserController {
             System.out.print(">> ");
 
             int choice = user.safeGetIntInput();
-            //scanner.nextLine();
 
             switch(choice) {
                 case 1 :
@@ -61,10 +61,10 @@ public class UserController {
                     new LoanController().startReturnProcess(user);
                     break;
                 case 5 :
-                    System.out.println("로그아웃 되었습니다.");
+                    System.out.println("📌로그아웃 되었습니다.");
                     return;
                 default :
-                    System.out.println("잘못된 선택입니다.");
+                    System.out.println("🚫잘못된 선택입니다.");
             }
         }
     }
@@ -74,7 +74,7 @@ public class UserController {
         System.out.print(">> ");
         String userId = scanner.nextLine();
         if(!isValidUserId(userId)) {
-            System.out.println("유효하지 않는 사용자 ID입니다.");
+            System.out.println("🚫유효하지 않는 사용자 ID입니다.");
             return;
         }
 
@@ -82,7 +82,7 @@ public class UserController {
         System.out.print(">> ");
         String password = scanner.nextLine();
         if(!isValidPassword(password)) {
-            System.out.println("유효하지 않는 비밀번호입니다.");
+            System.out.println("🚫유효하지 않는 비밀번호입니다.");
             return;
         }
 
@@ -94,22 +94,21 @@ public class UserController {
         System.out.print(">> ");
         String email = scanner.nextLine();
         if(!isValidEmail(email)) {
-            System.out.println("유효하지 않는 이메일 형식입니다.");
+            System.out.println("🚫유효하지 않는 이메일 형식입니다.");
             return;
         }
 
         System.out.println("역할 (1: 관리자, 2: 사용자)");
         System.out.print(">> ");
         int roleNo = new User().safeGetIntInput();
-        scanner.nextLine();
 
         User user = new User(userId, password, username, email, roleNo);
 
         try {
             userService.register(user);
-            System.out.println("회원가입 성공!!!");
+            System.out.println("📌회원가입 성공!!!");
         } catch(Exception e) {
-            System.out.println("회원가입 실패!!!");
+            System.out.println("🚫회원가입 실패!!!");
         }
     }
 
@@ -127,8 +126,4 @@ public class UserController {
     private boolean isValidEmail(String email) {
         return Pattern.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", email);
     }
-
-    public void manageUsers() {
-    }
-
 }

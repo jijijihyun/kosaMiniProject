@@ -13,4 +13,19 @@ public interface CategoryService {
     public Category getCategoryByName(String name);
     Category getCategoryByCategoryNo(int num)throws SQLException;
     public TupleKNY<String, String> getHierarchyCategory(Category c);
+
+    // =========================================================================
+    List<Category> getCategoryHierarchy() throws SQLException;
+
+    void addCategory(String parentName, String name) throws SQLException;
+
+    void updateCategory(Integer categoryNo, String newParentName, String newName) throws SQLException;
+
+    void deleteCategory(Integer categoryNo) throws SQLException;
+
+    Category getCategoryByNo(Integer categoryNo) throws SQLException;
+
+    String getCategoryNameByNo(Integer parentNo) throws SQLException;
+
+    boolean isCategoryValid(Integer categoryNo) throws SQLException;
 }

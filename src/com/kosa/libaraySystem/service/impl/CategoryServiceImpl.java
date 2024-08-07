@@ -43,4 +43,69 @@ public class CategoryServiceImpl implements CategoryService {
             }
         }
     }
+
+    // ====================================================================================
+    @Override
+    public List<Category> getCategoryHierarchy() throws SQLException {
+        return categoryDAO.getCategoryHierarchy();
+    }
+
+    @Override
+    public void addCategory(String parentName, String name) throws SQLException {
+        Integer parentNo = null;
+
+        if(parentName != null && !parentName.isEmpty()) {
+            if(!categoryDAO.categoryNameCheck(parentName)) {
+                throw new IllegalArgumentException("상위 카테고리가 존재하지 않습니다.");
+            }
+
+            parentNo = categoryDAO.getCategoryNoByName(parentName);
+        }
+
+        categoryDAO.addCategory(name, parentNo);
+    }
+
+    @Override
+    public void updateCategory(Integer categoryNo, String newParentName, String newName) throws SQLException {
+        Integer newParentNo = null;
+
+        if(newParentName != null && !newParentName.isEmpty()) {
+            if(!categoryDAO.categoryNameCheck(newParentName)) {
+                throw new IllegalArgumentException("상위 카테고리가 존재하지 않습니다.");
+            }
+
+            newParentNo = categoryDAO.getCategoryNoByName(newParentName);
+        }
+
+        categoryDAO.updateCategory(categoryNo, newName, newParentNo);
+    }
+
+    @Override
+    public void deleteCategory(Integer categoryNo) throws SQLException {
+        Category category = categoryDAO.getCategoryByNo(categoryNo);
+
+        if(categoryDAO.hasSubCategories(categoryNo)) {
+            throw new IllegalArgumentException("하위 카테고리가 존재하여 삭제할 수 없습니다.");
+        }
+
+        categoryDAO.deleteCategory(categoryNo);
+    }
+
+    @Override
+    public Category getCategoryByNo(Integer categoryNo) throws SQLException {
+        if(categoryNo == null) {
+            throw new NullPointerException("존재하지 않는 카테고리 번호입니다.");
+        }
+        return categoryDAO.getCategoryByNo(categoryNo);
+    }
+
+    @Override
+    public String getCategoryNameByNo(Integer parentNo) throws SQLException {
+        return categoryDAO.getCategoryNameByNo(parentNo);
+    }
+
+    @Override
+    public boolean isCategoryValid(Integer categoryNo) throws SQLException {
+        return categoryDAO.isCategoryValid(categoryNo);
+    }
 }

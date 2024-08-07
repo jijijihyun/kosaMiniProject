@@ -3,18 +3,35 @@ package com.kosa.libaraySystem.model;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
-public class Category {
-    int categoryNo;
-    String name;
-    int parentNo;
 
-    public int getCategoryNo() {
+public class Category {
+    private Integer categoryNo;
+    private String name;
+    private Integer parentNo;
+    private String path;
+
+    public Category(Integer categoryNo, String name, Integer parentNo, String path) {
+        this.categoryNo = categoryNo;
+        this.name = name;
+        this.parentNo = parentNo;
+        this.path = path;
+    }
+
+    public Category(Integer categoryNo, String name, Integer parentNo) {
+        this.categoryNo = categoryNo;
+        this.name = name;
+        this.parentNo = parentNo;
+    }
+
+    public Category() {
+
+    }
+
+    public Integer getCategoryNo() {
         return categoryNo;
     }
 
-    public void setCategoryNo(int categoryNo) {
+    public void setCategoryNo(Integer categoryNo) {
         this.categoryNo = categoryNo;
     }
 
@@ -26,11 +43,19 @@ public class Category {
         this.name = name;
     }
 
-    public int getParentNo() {
+    public Integer getParentNo() {
         return parentNo;
     }
 
-    public void setParentNo(int parentNo) {
+    public void setParentNo(Integer parentNo) {
         this.parentNo = parentNo;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

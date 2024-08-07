@@ -12,14 +12,12 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
         while(true) {
-            System.out.println("\n-\uD83D\uDCCC-\uD83D\uDC97---- 변경점 ------");
             System.out.println("\n------ KOSA 도서 관리 시스템 ------");
             System.out.println("[1] 로그인");
             System.out.println("[2] 회원가입");
             System.out.println("[3] 종료");
             System.out.print(">> ");
             int choice = new User().safeGetIntInput();
-            //scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -29,11 +27,11 @@ public class Main {
                     userController.register();
                     break;
                 case 3:
-                    System.out.println("프로그램을 종료합니다.");
+                    System.out.println("📌프로그램을 종료합니다.");
                     scanner.close();
                     return;
                 default:
-                    System.out.println("잘못된 선택입니다.");
+                    System.out.println("🚫잘못된 선택입니다.");
                     break;
             }
         }

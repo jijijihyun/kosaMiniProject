@@ -19,12 +19,12 @@ public class BookController {
 
     // 도서 관리 메뉴
     public void manageBooks() {
-        System.out.println("\n------     도서 관리메뉴     ------");
+        System.out.println("\n------     도서 관리     ------");
         System.out.println("[1] 도서 추가");
         System.out.println("[2] 도서 정보 수정");
         System.out.println("[3] 도서 삭제");
         System.out.println("[4] 도서 정보 조회");
-        System.out.println("[5] 로그아웃");
+        System.out.println("[5] 뒤로가기");
         System.out.print(">> ");
 
         int choice =setInteger();
@@ -47,7 +47,7 @@ public class BookController {
                 searchBooks();
                 break;
             case 5:
-                System.out.println("로그아웃 되었습니다.");
+                System.out.println("이전 메뉴로 이동합니다.");
                 return;
             default:
                 System.out.println("잘못된 선택입니다.");
@@ -177,6 +177,7 @@ public class BookController {
 
     }
     public void addBooks() {
+
         System.out.print("제목을 입력하세요 : ");
         String btitle = setStr();
 

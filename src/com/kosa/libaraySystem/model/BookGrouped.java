@@ -10,6 +10,19 @@ public class BookGrouped {
     private String categoryName;
     private String publisherName;
 
+    public BookGrouped() {
+
+    }
+
+    public BookGrouped(Book book, int cnt, String bookTitle, String authorName, String categoryName, String publisherName) {
+        this.book = book;
+        this.cnt = cnt;
+        this.bookTitle = bookTitle;
+        this.authorName = authorName;
+        this.categoryName = categoryName;
+        this.publisherName = publisherName;
+    }
+
     public Book getBook() {
         return book;
     }
