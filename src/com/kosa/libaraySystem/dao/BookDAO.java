@@ -156,6 +156,7 @@ public class BookDAO {
                 book.setAuthorNo(rs.getInt("authorNo"));
                 book.setPublisherNo(rs.getInt("publisherNo"));
                 book.setCategoryNo(rs.getInt("categoryNo"));
+                book.setStatus(rs.getString("status"));
 
                 list.add(book);
             }
