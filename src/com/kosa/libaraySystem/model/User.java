@@ -8,7 +8,6 @@ import java.util.Scanner;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class User {
     private int userNo;
     private String userId;
@@ -17,7 +16,8 @@ public class User {
     private String email;
     private int roleNo;
 
-    public User(String userId, String password, String username, String email, int roleNo) {
+    public User(int userNo, String userId, String password, String username, String email, int roleNo) {
+        this.userNo = userNo;
         this.userId = userId;
         this.password = password;
         this.username = username;
