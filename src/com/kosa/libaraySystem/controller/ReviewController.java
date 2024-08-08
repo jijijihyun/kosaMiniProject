@@ -37,15 +37,19 @@ public class ReviewController {
         boolean isRunning = true;
 
         while (isRunning) {
-            System.out.printf("\n=== \uD83E\uDEB6 리뷰 ===\n");
-            System.out.println("\n[1] 리뷰 작성\n[2] 리뷰 조회\n[3] 돌아 가기");
+            System.out.println("\n------     리뷰 작성     ------");
+            System.out.println("[1] 리뷰 작성");
+            System.out.println("[2] 리뷰 조회");
+            System.out.println("[3] 뒤로가기");
+            System.out.print(">> ");
             int choice = user.safeGetIntInput();
-
 
             switch (choice) {
                 case 1:
-                    System.out.println("\n=== ✍\uFE0F 리뷰 작성 페이지 ===");
-                    System.out.println("\n ✍\uFE0F 리뷰를 입력할 도서명을 입력하세요");
+                    System.out.println("\n------     리뷰 작성     ------");
+                    System.out.println("🔎      작성할 리뷰 정보      🔎");
+                    System.out.println("\n리뷰할 도서명");
+                    System.out.print(">> ");
                     String bookTitle = scanner.nextLine();
                     int userChoice1=0;
                     List<BookGrouped> books1 = new ArrayList<>();
@@ -62,22 +66,25 @@ public class ReviewController {
                             System.out.printf("%-5d", i);
                             books1.get(i-1).showBookGroupedInfoUser();
                         }
-                    System.out.println("\n ✍\uFE0F 리뷰를 등록하고 싶은 책의 번호를 입력하세요");
+
+                        System.out.println("\n리뷰 등록할 도서 번호");
+                        System.out.print(">> ");
                     try {
                         userChoice1 = user.safeGetIntInput();
 
                         if(userChoice1<1 && userChoice1>books1.size()+1) throw new Exception();
                     }catch(Exception e){
-                        System.out.println(" ⚠\uFE0F 올바른 숫자를 입력하지 않으셨네요..");
+                        System.out.println("🚫유효하지 않는 입력입니다. 숫자로 다시 입력하세요.");
                         break;
                     }
                     if(books1.get(userChoice1 -1).equals(null)){
-                        System.out.println(userChoice1 + " 는 유효한 숫자가 아니라고 하네요");
+                        System.out.println("🚫" + userChoice1 + " 는 유효하지 않는 입력입니다. 숫자로 다시 입력하세요.");
                         break;
                     }//북 정보가 유효한 북을 골랐다면
                     else{
                         StringBuilder reviewBuilder = new StringBuilder();
-                        System.out.println(" ✍\uFE0F 리뷰를 입력해주세요. [등록 방법: 등록 입력]");
+                        System.out.println("리뷰 입력(등록 원할 시 : '등록' 입력)");
+                        System.out.print(">> ");
                         while (true) {
                             String input = scanner.nextLine();
                             if ("등록".equals(input)) {
@@ -92,18 +99,20 @@ public class ReviewController {
                                     bookService.getBookSearchByTitle(books1.get(userChoice1 -1).getBookTitle()).getBookNo(),
                                     reviewBuilder.toString(),sqlDate);//여기에 실제 리뷰내용을 데이터베이스에 접근하는 내용
                         }catch(SQLException e){
-                            System.out.println(" ⚠\uFE0F 리뷰가 제대로 등록되지 않았습니다. 다시 확인해보세요.");
+                            System.out.println("🚫리뷰가 등록되지 않았습니다. 다시 시도해보세요.");
                             break;
                         }
 
                         }
                     } else {//도서 리스트가 없다면
-                        System.out.println("\n ⚠\uFE0F 유효한 책이 없습니다.");
+                        System.out.println("🚫유효한 책이 없습니다.");
                     }
                     break;
                 case 2:
-                    System.out.println("\n===\uD83D\uDD0D 리뷰 조회 페이지 ===");
-                    System.out.println("\n ✍\uFE0F 리뷰를 검색할 도서명을 입력하세요");
+                    System.out.println("\n------     리뷰 조회     ------");
+                    System.out.println("🔎      검색할 리뷰 정보      🔎");
+                    System.out.println("리뷰 검색할 도서명");
+                    System.out.print(">> ");
                     String bookTitle2 = scanner.nextLine();
                     int userChoice=0;
                     List<BookGrouped> books = new ArrayList<>();
@@ -121,16 +130,17 @@ public class ReviewController {
                             System.out.printf("%-5d", i);
                             books.get(i-1).showBookGroupedInfoUser();
                         }
-                        System.out.println("\n ✍\uFE0F 리뷰를 확인하고 싶은 책의 번호를 입력하세요");
+                        System.out.println("\n리뷰 확인할 책의 번호");
+                        System.out.print(">> ");
                         try {
                             userChoice = user.safeGetIntInput();
                             if(userChoice<1 && userChoice>books.size()+1) throw new Exception();
                         }catch(Exception e){
-                            System.out.println("⚠\uFE0F 올바른 숫자를 입력하지 않으셨네요..");
+                            System.out.println("🚫유효하지 않는 입력입니다. 숫자로 다시 입력하세요.");
                             break;
                         }
                         if(books.get(userChoice -1).equals(null)){
-                            System.out.println(userChoice + " 는 유효한 숫자가 아니라고 하네요");
+                            System.out.println("🚫" + userChoice + " 는 유효하지 않는 입력입니다. 숫자로 다시 입력하세요.");
                             break;
                         }//북 정보가 유효한 북을 골랐다면
                         else{
@@ -143,24 +153,22 @@ public class ReviewController {
                             e.printStackTrace();
                         }
                     } else {//도서 리스트가 없다면
-                        System.out.println("\n ⚠\uFE0F 유효한 책이 없습니다.");
+                        System.out.println("\n🚫유효한 책이 없습니다.");
                     }
                     break;
                 case 3:
-                    System.out.println("\n \uD83D\uDD19 유저 메인으로 돌아갑니다.");
+                    System.out.println("\n📌이전 메뉴로 이동합니다.");
                     isRunning= false;
                     break;
                 default:
-                    System.out.println("\n ⚠\uFE0F 유효하지 않은 입력입니다.");
+                    System.out.println("\n🚫잘못된 선택입니다.");
                     break;
             }
         }
     }
 
-    public void writeReview() {
-    }
-    private void showReviewConsole(List<Review> reviews, String bookTitle)throws Exception{
-        System.out.printf("\n \uD83E\uDEB6 ====%s 의 리뷰 리스트 ====\n", bookTitle);
+    private void showReviewConsole(List<Review> reviews, String bookTitle) throws Exception{
+        System.out.printf("\n------     %s 의 리뷰 리스트     ------\n", bookTitle);
 
         for(Review r : reviews){
             System.out.printf("\n%s: %-10s  %s: %-10s  %s: %-10s  %s: %-10s\n",
@@ -168,7 +176,7 @@ public class ReviewController {
                     "유저ID", userService.getUserInstanceDataByUserNo(r.getUserNo()).getUserId(),
                     "유저이름", userService.getUserInstanceDataByUserNo(r.getUserNo()).getUsername(),
                     "등록일자", r.getReviewDate());
-            System.out.println(" \uD83D\uDCD6 --- 리뷰 내용 ---");
+            System.out.println("------     리뷰 내용     ------");
             System.out.println(addLineBreaks(r.getReviewText(), 30));
         }
     }
