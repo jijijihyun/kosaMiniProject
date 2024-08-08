@@ -37,7 +37,7 @@ public class UserController {
 
     public void showUserMenu(User user) throws SQLException {
         while(true) {
-            System.out.printf("\n--- ID: %s( 이름: %s )님의 메뉴 ---\n", user.getUserId(), user.getUsername());
+            System.out.printf("\n------ %s(이름: %s)님의 메뉴 ------\n", user.getUserId(), user.getUsername());
             System.out.println("[1] 도서 검색");
             System.out.println("[2] 리뷰 작성");
             System.out.println("[3] 도서 대출");

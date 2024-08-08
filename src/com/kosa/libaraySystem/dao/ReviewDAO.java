@@ -30,7 +30,6 @@ public class ReviewDAO {
     }
 
     public void insertReview(User user, int bookNo, String content, Date nowTime) throws SQLException {
-        System.out.println("====리뷰 등록====");
         String sqlSQOneline = "INSERT INTO Reviews (bookNo, userNo, reviewText, reviewDate) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DBUtils.getConnection();

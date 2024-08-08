@@ -90,6 +90,7 @@ public class User {
                 return number;  // 입력 받은 숫자 반환
             } catch (NumberFormatException e) {
                 System.out.println(" ⚠\uFE0F 제대로된 숫자를 입력해주세요");
+                System.out.print(">> ");
             }
         }
     }

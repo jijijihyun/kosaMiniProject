@@ -88,7 +88,7 @@ public class BookGrouped {
             categoryService.getHierarchyCategory(categoryService.getCategoryByName(this.getCategoryName()));
         String bigCateName = categoriesName.getKey();
         String smallCateName = categoriesName.getValue();
-        System.out.printf("|%-40s|%-10s|%-15s|%-15s|%-10s|%5d|\n",
+        System.out.printf("| %-32s | %-9s | %-10s | %-12s | %-10s | %5d |\n",
                 this.getBookTitle(),
                 formatString(this.getAuthorName(), 10),
                 formatString(bigCateName, 15),
