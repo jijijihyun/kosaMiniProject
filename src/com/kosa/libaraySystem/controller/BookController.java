@@ -347,49 +347,6 @@ public class BookController {
         }
     }
 
-    //일단 카테고리명
-
-    public void searchBooksByCategory() throws SQLException {
-        System.out.print(" ✍\uFE0F 조회할 도서의 카테고리명을 입력하세요: ");
-
-        String categoryName = scanner.nextLine();
-
-        Category category = categoryService.getCategoryByName(categoryName);
-        if (category != null) {
-            displayListByCategoryNum(category.getCategoryNo());
-        } else {
-            System.out.println(" ⚠\uFE0F 카테고리를 찾을 수 없습니다.");
-        }
-    }
-
-    //서브 카테고리 때문에
-    private void displayListByCategoryNum(int categoryNo) {
-        List<Category> subCategories = categoryService.getSubCategoriesByParentNum(categoryNo);
-
-        if (!subCategories.isEmpty()) {
-            System.out.println(" ✍\uFE0F 하위 카테고리의 번호를 선택하세요:");
-            //하위 카테고리 리스트 출력
-            for (int i = 0; i < subCategories.size(); i++) {
-                System.out.println((i + 1) + ". " + subCategories.get(i).getName());
-            }
-            int choice = safelyGetIntInput();
-            scanner.nextLine();  // 개행 문자 소비
-
-
-            if (choice > 0 && choice <= subCategories.size()) {
-                displayListByCategoryNum(subCategories.get(choice - 1).getCategoryNo());
-            } else {
-                System.out.println(" ⚠\uFE0F 잘못된 선택입니다.");
-            }
-        } else {
-            try{
-                List<BookGrouped> books = bookService.getBookGroupedSearchByCategoryNum(categoryNo);
-                showBookListUser(books);
-            }catch(SQLException e){
-                System.out.println(e.getMessage());
-            }
-        }
-    }
 
     //숫자 입력 안전 장치
     private int safelyGetIntInput() {
