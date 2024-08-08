@@ -11,20 +11,18 @@ import java.util.List;
 import java.util.Scanner;
 
 public class BookController {
-    private BookService bookService = new BookServiceImpl();
     private Scanner scanner = new Scanner(System.in);
-    private AuthorService authorService = new AuthorServiceImpl();
+    private BookService bookService = new BookServiceImpl();
     private CategoryService categoryService = new CategoryServiceImpl();
-    private PublisherService publisherService = new PublisherServiceImpl();
 
     // 도서 관리 메뉴
     public void manageBooks() throws SQLException {
         while (true) {
             System.out.println("\n------     도서 관리     ------");
-            System.out.println("[1] 도서 추가");
-            System.out.println("[2] 도서 정보 수정");
-            System.out.println("[3] 도서 삭제");
-            System.out.println("[4] 도서 정보 조회");
+            System.out.println("[1] 도서 조회");
+            System.out.println("[2] 도서 추가");
+            System.out.println("[3] 도서 수정");
+            System.out.println("[4] 도서 삭제");
             System.out.println("[5] 뒤로가기");
             System.out.print(">> ");
 
@@ -32,150 +30,162 @@ public class BookController {
 
             switch (choice) {
                 case 1:
+                    // 도서 정보 조회
+                    searchBooks();
+                    break;
+                case 2:
                     // 도서 추가
                     addBooks();
                     break;
-                case 2:
+                case 3:
                     // 도서 정보 수정
                     updateBooks();
                     break;
-                case 3:
+                case 4:
                     // 도서 삭제
                     deleteBooks();
                     break;
-                case 4:
-                    // 도서 정보 조회
-                    searchBooks1();
-                    break;
                 case 5:
-                    System.out.println("이전 메뉴로 이동합니다.");
+                    System.out.println("📌이전 메뉴로 이동합니다.");
                     return;
                 default:
-                    System.out.println("잘못된 선택입니다.");
+                    System.out.println("🚫잘못된 선택입니다.");
             }
         }
     }
 
     private void deleteBooks() {
-        // 제목을 입력 받아서 책 재목이 같은 책이 있으면  정보를 전부 출력 후 트루 반환 같은 책이 없으면 펄스 반환. 반환값은 b에 저장
-        boolean b = searchBooks1();
-        // b가 진실이면 계속 진행하고 b가 거짓이면  현재 메소드를 바로 종료
-        if (b == false) {
+        if (searchBooks() == false) {
             return;
         }
 
         // 책 번호 입력 하면 해당 북넘버 도서 삭제
-        System.out.print("삭제할 도서의 번호을 입력하세요: ");
+        System.out.println("\n------     도서 삭제     ------");
+        System.out.println("🔎      삭제할 도서 번호      🔎");
+        System.out.print(">> ");
         int bookNo = setInteger();
         // 20240804 추가
         //  도서 번호가 없는 경우 deleteBooks 종료
         int bno = bookService.bNoSearch(bookNo);
         if (bno == 0) {
-            System.out.println("도서 번호를 찾을 수 없습니다.");
+            System.out.println("🚫도서 번호를 찾을 수 없습니다.");
             return;
         }
 
         bookService.deleteBookByTitle(bookNo);
-        System.out.println("도서가 삭제되었습니다.");
+        System.out.println("\n📌도서가 삭제되었습니다.");
     }
 
-    private boolean searchBooks1() {
-        System.out.print("조회할 도서의 제목을 입력하세요: ");
+    private boolean searchBooks() {
+        System.out.println("\n------     도서 검색     ------");
+        System.out.println("🔎      검색할 도서 제목      🔎");
+        System.out.print(">> ");
         String title = setStr();
-        List<Book> book = bookService.searchBookByTitle(title);
+
+        List<Book> books = bookService.searchBookByTitle(title);
+
         // 리턴 받은 book.getBookAuthorNo() 번호로 작가 이름 리턴
-        if (!book.isEmpty()) {
-            System.out.print("도서 번호");
-            System.out.print("\t도서 제목 ");
-            System.out.print("\t작가  ");
-            System.out.print("\t출판사 ");
-            System.out.print("\t카테고리 ");
-            System.out.println();
+        if(books.isEmpty()) {
+            System.out.println("🚫검색 결과가 없습니다.");
+            return false;
+        } else {
+            printTableHeader();
+            for(Book book : books) {
+                int baNo = book.getAuthorNo();
+                int bpNo = book.getPublisherNo();
+                int bcno = book.getCategoryNo();
 
-            for (int i = 0; book.size() > i; i++) {
-
-                int baNo = book.get(i).getAuthorNo();
-                int bpNo = book.get(i).getPublisherNo();
-                int bcno = book.get(i).getCategoryNo();
-
-
+                int bno = book.getBookNo();
+                String btitle = book.getTitle();
                 String a = bookService.reverseAuthorSearch(baNo);
                 String p = bookService.reversePublisherSearch(bpNo);
                 String c = bookService.reverseCategorySearch(bcno);
+                String bstatus = book.getStatus();
 
-                System.out.print("" + book.get(i).getBookNo());
-                System.out.print("\t" + book.get(i).getTitle());
-                System.out.print("\t" + bookService.reverseAuthorSearch(baNo));
-                System.out.print("\t" + p);
-                System.out.print("\t" + bookService.reverseCategorySearch(bcno));
-                System.out.println();
+
+                printBookDetails(bno, btitle, a, p, c, bstatus);
             }
-
-        } else {
-            System.out.println("도서를 찾을 수 없습니다.");
-            return false;
+            printTableFooter();
         }
         return true;
+    }
 
+    private void printTableHeader() {
+        System.out.printf("\n+---------+-------------------------------+--------+----------+-----------+---------+%n");
+        System.out.printf("| 도서 번호 | 제목                        | 저자     | 출판사     | 카테고리     | 대출여부  |%n");
+        System.out.printf("+---------+-------------------------------+--------+----------+-----------+---------+%n");
+    }
+
+    private void printBookDetails(int bno, String btitle, String a, String p, String c,String bstatus) {
+        System.out.printf("| %-7d | %-25s | %-7s | %-7s | %-7s | %-7s |%n",
+                bno, btitle, a, p, c, bstatus);
+    }
+
+    private void printTableFooter() {
+        System.out.printf("+---------+-------------------------------+--------+----------+-----------+---------+%n");
     }
 
     private void updateBooks() {
-
-
-        boolean b = searchBooks1();
         // searchBooks(); 안될 경우 바로 종료
-        if (b == false) {
+        if (searchBooks() == false) {
             return;
         }
 
         //20240802 변경점
         // 변경할 도서의 번호를 입력 받으면 해당  번호의 도서를 새로 입력 받은 제목, 작가,출반사, 카태고리로 변경한다
         //만약 입력한 작가 ,출판사,카태고리가 없는 정보면 없다고 알리고 종료
-        System.out.print("수정할 도서의 번호를: ");
+        System.out.println("\n------     도서 수정     ------");
+        System.out.println("🔎      수정할 도서 번호      🔎");
+        System.out.print(">> ");
         int bookno = setInteger();
 
         // 20240804 추가
         //  도서 번호가 없는 경우 updateBooks 종료
         int bno = bookService.bNoSearch(bookno);
         if (bno == 0) {
-            System.out.println("도서 번호를 찾을 수 없습니다.");
+            System.out.println("🚫도서 번호를 찾을 수 없습니다.");
             return;
         }
 
-
-        System.out.print("새로운 제목을 입력하세요: ");
+        System.out.println("새로운 제목");
+        System.out.print(">> ");
         String newTitle = setStr();
+        if(newTitle == null){
+            return;
+        }
 
-        //
-        System.out.print("새로운 작가를 입력 하세요 : ");
+        System.out.println("새로운 저자");
+        System.out.print(">> ");
         String bauthor = setStr();
         // bauthor 받고 작가 디비에서 검색 후 작가 번호를 리턴
         int authorNo1 = bookService.authorSearch(bauthor);
         if (authorNo1 == 0) {
-            System.out.println("작가를 찾을 수 없습니다.");
+            System.out.println("🚫작가를 찾을 수 없습니다.");
             return;
         }
 
-        System.out.print("새로운 출판사를 입력하세요 : ");
+        System.out.println("새로운 출판사");
+        System.out.print(">> ");
         String bpublisher = setStr();
         // bpublisher 받고 출판사 디비에서 검색 후 출판사 번호를 리턴
         int publisherNo = bookService.publisherSearch(bpublisher);
         if (publisherNo == 0) {
-            System.out.println("출판사를 찾을 수 없습니다.");
+            System.out.println("🚫출판사를 찾을 수 없습니다.");
             return;
         }
 
-        System.out.print("새로운 카테고리를 입력 하세요 : ");
+        System.out.println("새로운 카테고리");
+        System.out.print(">> ");
         String newbcategory = setStr();
         // bcategory 받고 카테고리 디비에서 검색 후 카테고리 번호를 리턴
         int categoryNo = bookService.categorySearch(newbcategory);
         if (categoryNo == 0) {
-            System.out.println("카테고리를 찾을 수 없습니다.");
+            System.out.println("🚫카테고리를 찾을 수 없습니다.");
             return;
         }
 
         bookService.updateBook(newTitle, authorNo1, publisherNo, categoryNo, bookno);
-        System.out.println("도서 제목이 변경되었습니다.");
+        System.out.println("\n📌도서 정보가 수정되었습니다.");
 
     }
     public void addBooks() {
@@ -186,13 +196,17 @@ public class BookController {
         System.out.print(">> ");
         String btitle = setStr();
 
+        if(btitle == null){
+            return;
+        }
+
         System.out.println("저자명");
         System.out.print(">> ");
         String bauthor = setStr();
-            // bauthor 받고 작가 디비에서 검색 후 작가 번호를 리턴
+        // bauthor 받고 작가 디비에서 검색 후 작가 번호를 리턴
         int authorNo1 = bookService.authorSearch(bauthor);
         if (authorNo1 == 0) {
-            System.out.println("작가를 찾을 수 없습니다.");
+            System.out.println("🚫작가를 찾을 수 없습니다.");
             return;
         }
 
@@ -202,7 +216,7 @@ public class BookController {
             // bpublisher 받고 출판사 디비에서 검색 후 출판사 번호를 리턴
         int publisherNo = bookService.publisherSearch(bpublisher);
         if (publisherNo == 0) {
-            System.out.println("출판사를 찾을 수 없습니다.");
+            System.out.println("🚫출판사를 찾을 수 없습니다.");
             return;
         }
 
@@ -212,47 +226,47 @@ public class BookController {
         // bcategory 받고 카테고리 디비에서 검색 후 카테고리 번호를 리턴
         int categoryNo = bookService.categorySearch(bcategory);
         if (categoryNo == 0) {
-            System.out.println("카테고리를 찾을 수 없습니다.");
+            System.out.println("🚫카테고리를 찾을 수 없습니다.");
             return;
         }
-        System.out.print("몇권 인가요? : ");
+
+        System.out.println("도서 권 수");
+        System.out.print(">> ");
         int books = setInteger();
 
         for(int i=0; i<books ; i++){
             bookService.addBook(btitle, authorNo1, publisherNo, categoryNo);
         }
 
-        System.out.println("도서가 추가되었습니다.");
+        System.out.println("\n📌도서가 추가되었습니다.");
     }
 
     private String setStr(){
         try {
             String aname = scanner.nextLine();
             if(aname.isEmpty()){
-                System.out.println("올바른 값을 입력 바랍니다.");
+                System.out.println("\n🚫올바른 값을 입력 바랍니다.");
                 return null;
             }
             return aname;
         }catch (Exception e){
-            System.out.println("올바른 값을 입력 바랍니다.");
+            System.out.println("\n🚫올바른 값을 입력 바랍니다.");
         }
         return null;
     }
-
-
 
     // 정수를 입력해 달라고 루프걸기
     private int setInteger(){
         try {
             String ano = scanner.nextLine();
             if(ano.isEmpty()){
-                System.out.println("올바른 값을 입력 바랍니다.");
+                System.out.println("\n🚫올바른 값을 입력 바랍니다.");
                 return 0;
             }
             Integer a = Integer.parseInt(ano);
             return a;
         }catch (Exception e){
-            System.out.println("올바른 값을 입력 바랍니다.");
+            System.out.println("\n🚫올바른 값을 입력 바랍니다.");
             return 0;
         }
     }
@@ -269,51 +283,57 @@ public class BookController {
 
         while (isRunning) {
 
-            System.out.println("\n=== \uD83D\uDD0D 도서 검색 페이지 ===\n" +
-                    "[1] 책명으로 검색\n[2] 저자로 검색\n[3] 출판사로 검색\n[4] 검색종료");
-                int choice = safelyGetIntInput();
-                try{
-                    switch (choice) {
-                        case 1:
-                            System.out.println("\n ✍\uFE0F 책명을 입력하세요");
-                            String bookTitle = scanner.nextLine();
+            System.out.println("\n------     도서 검색     ------");
+            System.out.println("🔎      검색할 도서 제목      🔎");
+            System.out.println("[1] 도서명으로 검색");
+            System.out.println("[2] 저자로 검색");
+            System.out.println("[3] 출판사로 검색");
+            System.out.println("[4] 검색종료");
+            System.out.print(">> ");
+            int choice = safelyGetIntInput();
+            try{
+                switch (choice) {
+                    case 1:
+                        System.out.println("\n도서명 검색");
+                        System.out.print(">> ");
+                        String bookTitle = scanner.nextLine();
 
-                            //책 리스트 받을 공간 생성 후 받아
-                            List<BookGrouped> bookGroupeds = bookService.getBookGroupedSearchTitle(bookTitle);
-                            showBookListUser(bookGroupeds);
-                            break;
-                        case 2:
-                            System.out.println("\n ✍\uFE0F 저자를 입력하세요");
-                            String authorName = scanner.nextLine();
+                        //책 리스트 받을 공간 생성 후 받아
+                        List<BookGrouped> bookGroupeds = bookService.getBookGroupedSearchTitle(bookTitle);
+                        showBookListUser(bookGroupeds);
+                        break;
+                    case 2:
+                        System.out.println("\n저자 검색");
+                        System.out.print(">> ");
+                        String authorName = scanner.nextLine();
 
-                            //책 리스트 받을 공간 생성 후 받아
-                            List<BookGrouped> bookGroupedByAuthor = bookService.getBookGroupedSearchByAuthorName(authorName);
-                            showBookListUser(bookGroupedByAuthor);
-                            break;
-                        case 3:
-                            System.out.println("\n ✍\uFE0F 출판사를 입력하세요");
-                            String pubName = scanner.nextLine();
+                        //책 리스트 받을 공간 생성 후 받아
+                        List<BookGrouped> bookGroupedByAuthor = bookService.getBookGroupedSearchByAuthorName(authorName);
+                        showBookListUser(bookGroupedByAuthor);
+                        break;
+                    case 3:
+                        System.out.println("\n출판사 검색");
+                        System.out.print(">> ");
+                        String pubName = scanner.nextLine();
 
-                            //책 리스트 받을 공간 생성 후 받아
-                            List<BookGrouped> bookGroupedByPub = bookService.getBookGroupedSearchByPublisherName(pubName);
-                            showBookListUser(bookGroupedByPub);
-
-                            break;
-
-                        case 4:
-                            System.out.println("\n \uD83D\uDD19 검색을 종료합니다.");
-                            isRunning= false;
-                            break;
-                        default:
-                            System.out.println("\n ⚠\uFE0F 유효하지 않은 입력입니다.");
-                            break;
-                    }
-                }catch(SQLException e){
-                    System.out.println(e.getMessage());
+                        //책 리스트 받을 공간 생성 후 받아
+                        List<BookGrouped> bookGroupedByPub = bookService.getBookGroupedSearchByPublisherName(pubName);
+                        showBookListUser(bookGroupedByPub);
+                        break;
+                    case 4:
+                        System.out.println("\n📌검색을 종료합니다.");
+                        isRunning= false;
+                        break;
+                    default:
+                        System.out.println("\n🚫유효하지 않은 입력입니다.");
+                        break;
                 }
-
+            }catch(SQLException e){
+                System.out.println(e.getMessage());
+            }
         }
     }
+
     //문자열 길이 포맷팅
     private String formatString(String str, int maxLength) {
         return str.length() > maxLength ? str.substring(0, maxLength - 3) + "..." : str;
@@ -323,7 +343,7 @@ public class BookController {
     private void showBookListUser(List<BookGrouped> bg) throws SQLException {
         if(bg.isEmpty())
         {
-            System.out.println("\n ✖\uFE0F 해당 책은 없습니다.");
+            System.out.println("\n🚫해당 책은 없습니다.");
         }
         else{
             System.out.printf("\n+----------------------------------------+----------+---------------+---------------+----------+-----+%n");
@@ -346,8 +366,6 @@ public class BookController {
             System.out.printf("+----------------------------------------+----------+---------------+---------------+----------+-----+%n");
         }
     }
-
-
     //숫자 입력 안전 장치
     private int safelyGetIntInput() {
         while (true) {
@@ -356,7 +374,7 @@ public class BookController {
                 int number = Integer.parseInt(input);
                 return number;  // 입력 받은 숫자 반환
             } catch (NumberFormatException e) {
-                System.out.println(" ⚠\uFE0F 제대로된 숫자를 입력해주세요");
+                System.out.println("🚫숫자를 입력해주세요.");
             }
         }
     }

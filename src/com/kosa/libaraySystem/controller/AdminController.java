@@ -35,10 +35,10 @@ public class AdminController {
                     new CategoryController().manageCategories();
                     break;
                 case 5 :
-                    System.out.println("📌로그아웃 되었습니다.");
+                    System.out.println("\n📌로그아웃 되었습니다.");
                     return;
                 default :
-                    System.out.println("🚫잘못된 선택입니다.");
+                    System.out.println("\n🚫잘못된 선택입니다.");
             }
         }
     }

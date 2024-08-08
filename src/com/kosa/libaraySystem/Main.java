@@ -27,11 +27,11 @@ public class Main {
                     userController.register();
                     break;
                 case 3:
-                    System.out.println("📌프로그램을 종료합니다.");
+                    System.out.println("\n📌프로그램을 종료합니다.");
                     scanner.close();
                     return;
                 default:
-                    System.out.println("🚫잘못된 선택입니다.");
+                    System.out.println("\n🚫잘못된 선택입니다.");
                     break;
             }
         }
