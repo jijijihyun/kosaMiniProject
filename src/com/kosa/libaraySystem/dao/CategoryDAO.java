@@ -82,7 +82,7 @@ public class CategoryDAO {
             if (resultSet.next()) {
                 c.setCategoryNo(resultSet.getInt("categoryNo"));
                 c.setName(resultSet.getString("name"));
-                c.setParentNo(resultSet.getInt("parentNo"));
+                c.setParentNo(resultSet.getObject("parentNo") != null ? resultSet.getInt("parentNo") : null);
             }
         }
         return c;
