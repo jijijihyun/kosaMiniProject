@@ -8,12 +8,15 @@ import java.util.Base64;
 public class PasswordUtil {
     private static final int SALT_LENGTH = 16;
 
+    // 비밀번호를 해싱하여 반환
     public static String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] salt = getSalt();
             md.update(salt);
             byte[] hashedPassword = md.digest(password.getBytes());
+
+            // 솔트와 해싱된 비밀번호를 각각 헥사 문자열로 변환하여 반환
             return bytesToHex(salt) + ":" + bytesToHex(hashedPassword);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -21,6 +24,7 @@ public class PasswordUtil {
         }
     }
 
+    // 입력받은 비밀번호와 DB에 암호화되어 저장된 비밀번호가 일치하는지 검증
     public static boolean verifyPassword(String password, String storedHash) {
         try {
             String[] parts = storedHash.split(":");
@@ -39,9 +43,11 @@ public class PasswordUtil {
     }
 
     private static byte[] getSalt() {
+        // SecureRandom 인스턴스를 사용하여 강력한 난 생성
         SecureRandom sr = new SecureRandom();
         byte[] salt = new byte[SALT_LENGTH];
         sr.nextBytes(salt);
+
         return salt;
     }
 

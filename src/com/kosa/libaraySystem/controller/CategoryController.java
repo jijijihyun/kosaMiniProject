@@ -53,6 +53,7 @@ public class CategoryController {
         }
     }
 
+    // 전체 카테고리 검색
     private void searchCategories() throws SQLException {
         List<Category> categories = categoryService.getCategoryHierarchy();
 
@@ -87,6 +88,7 @@ public class CategoryController {
         System.out.printf("+---------+-------------------------------+-----------------+---------------------------------------------+%n");
     }
 
+    // 카테고리 추가
     private void addCategory() throws SQLException {
         searchCategories();
 
@@ -113,6 +115,7 @@ public class CategoryController {
         }
     }
 
+    // 카테고리 수정
     private void updateCategory() throws SQLException {
         searchCategories();
 
@@ -160,6 +163,7 @@ public class CategoryController {
         }
     }
 
+    // 카테고리 삭제
     private void deleteCategory() throws SQLException {
         searchCategories();
 
