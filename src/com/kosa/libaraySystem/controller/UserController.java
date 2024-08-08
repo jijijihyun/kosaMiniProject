@@ -70,7 +70,7 @@ public class UserController {
     }
 
     public void register() throws SQLException {
-        System.out.println("사용자 ID (영문자와 숫자만 입력, 5 ~ 20자)");
+        System.out.println("\n사용자 ID (영문자와 숫자만 입력, 5 ~ 20자)");
         System.out.print(">> ");
         String userId = scanner.nextLine();
         if(!isValidUserId(userId)) {
@@ -106,9 +106,9 @@ public class UserController {
 
         try {
             userService.register(user);
-            System.out.println("📌회원가입 성공!!!");
+            System.out.println("\n📌회원가입 성공!!!");
         } catch(Exception e) {
-            System.out.println("🚫회원가입 실패!!!");
+            System.out.println("\n🚫회원가입 실패!!!");
         }
     }
 

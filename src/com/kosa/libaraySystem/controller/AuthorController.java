@@ -174,8 +174,12 @@ public class AuthorController {
             return;
         }
 
-        authorService.deletByAuthor(ano);
-        System.out.println("\n📌저자가 삭제되었습니다.");
+        try {
+            authorService.deletByAuthor(ano);
+            System.out.println("\n📌저자가 삭제되었습니다.");
+        }catch (SQLException e){
+            System.out.println("🚫해당 저자의 도서는 대출중입니다. 반납 후, 도서를 먼저 삭제해주세요.");
+        }
     }
 
     // 저자 정보 조회

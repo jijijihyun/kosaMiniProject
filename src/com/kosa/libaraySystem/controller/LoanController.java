@@ -98,10 +98,13 @@ public class LoanController {
 
         //2. 반환한 북 리스트 + loanInfo 리스트를 매개변수로 받아 인터페이스에 출력하는 함수
         //  도서번호/책제목/작가/카테고리/대출일/반납예정일
+        //20240808 수정: 만약 showUserLoanList에서 북을 탐색하는 도중 Null값이 발견되면 에러던짐.
         try {
+            for(Book b : books)
+                if(b.getBookNo()==0) throw new NullPointerException();
             showUserLoanList(books, loans, user);
-        } catch (SQLException e) {
-            System.out.println("\n🚫유효한 입력이 아닙니다.");
+        } catch (SQLException | NullPointerException e) {
+            System.out.println("\n🚫 대출 정보를 조회할 수 없습니다. 관리자에게 문의하세요.");
             return;
         }
 

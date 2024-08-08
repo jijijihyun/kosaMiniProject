@@ -19,7 +19,7 @@ public class PublisherServiceImpl implements PublisherService{
     }
 
     @Override
-    public void deletByPublisher(int publisherNo) {
+    public void deletByPublisher(int publisherNo) throws SQLException {
 
         publisherDAO.deleteByPublisher(publisherNo);
     }

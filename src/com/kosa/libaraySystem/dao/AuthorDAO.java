@@ -72,7 +72,7 @@ public class AuthorDAO {
 
 
     // 저자 번호로 삭제 하는  sql
-    public void deleteByAuthor(int authorNo) {
+    public void deleteByAuthor(int authorNo) throws SQLException {
         String sql = " delete from authors where authorNo = ? ";
 
         try (Connection conn = DBUtils.getConnection();
@@ -82,8 +82,6 @@ public class AuthorDAO {
 
             preStat.executeUpdate();
 
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

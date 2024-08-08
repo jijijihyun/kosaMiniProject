@@ -11,7 +11,7 @@ public interface PublisherService{
 
     public void addPublisherName(String publisherNoName);
 
-    public void deletByPublisher(int publisherNo);
+    public void deletByPublisher(int publisherNo) throws SQLException;
 
     public List<Publisher> findPublisherByAll();
 

@@ -10,7 +10,7 @@ public interface AuthorService {
 
     public void addAuthorName(String authorName);
 
-    public void deletByAuthor(int authorNum);
+    public void deletByAuthor(int authorNum) throws SQLException;
 
     public List<Author> findAuthorByAll();
 

@@ -22,7 +22,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void deletByAuthor(int AuthorNum) {
+    public void deletByAuthor(int AuthorNum) throws SQLException {
         authorDAO.deleteByAuthor(AuthorNum);
     }
 
