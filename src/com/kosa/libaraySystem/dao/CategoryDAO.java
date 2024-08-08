@@ -89,19 +89,6 @@ public class CategoryDAO {
     }
 
     // =======================================================================================
-    public boolean categoryNoCheck(String categoryName) throws SQLException {
-        String sql = "SELECT 1 FROM categories WHERE name = ? LIMIT 1";
-
-        try(Connection conn = DBUtils.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, categoryName);
-
-            try(ResultSet rs = pstmt.executeQuery()) {
-                return rs.next();
-            }
-        }
-    }
-
     public int getCategoryNoByName(String categoryName) throws SQLException {
         String sql = "SELECT categoryNo FROM categories WHERE name = ?";
 
@@ -122,11 +109,15 @@ public class CategoryDAO {
     public List<Category> getCategoryHierarchy() throws SQLException {
         List<Category> categories = new ArrayList<>();
 
-        String sql = "WITH RECURSIVE CategoryHierarchy AS ("
+        // 계층형 쿼리
+        // 재귀적 CTE(공통 테이블 표현식)
+        String sql = "WITH RECURSIVE CategoryHierarchy AS ("    // 재귀적 CTE 정의
+                // 기본 쿼리문 : 상위 카테고리가 없는 최상위 카테고리 선택
                 + "    SELECT categoryNo, name, parentNo, CAST(name AS CHAR(1000)) AS path"
                 + "    FROM Categories"
                 + "    WHERE parentNo IS NULL"
                 + "    UNION ALL"
+                // 재귀 쿼리문 : 기본 쿼리문의 결과에 따른 각 카테고리의 하위 카테고리 선택
                 + "    SELECT cg.categoryNo, cg.name, cg.parentNo, CONCAT(ch.path, ' -> ', cg.name)"
                 + "    FROM Categories cg"
                 + "    INNER JOIN CategoryHierarchy ch ON cg.parentNo = ch.categoryNo"

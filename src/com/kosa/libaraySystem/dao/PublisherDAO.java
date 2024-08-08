@@ -68,7 +68,7 @@ public class PublisherDAO {
 
 
     // 저자 번호로 삭제 하는  sql
-    public void deleteByPublisher(int publisherNo) {
+    public void deleteByPublisher(int publisherNo) throws SQLException {
         String sql = " delete from Publishers where publisherNo = ? ";
 
         try (Connection conn = DBUtils.getConnection();
@@ -78,8 +78,6 @@ public class PublisherDAO {
 
             preStat.executeUpdate();
 
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

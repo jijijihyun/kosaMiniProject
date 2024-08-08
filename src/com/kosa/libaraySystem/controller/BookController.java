@@ -46,10 +46,10 @@ public class BookController {
                     deleteBooks();
                     break;
                 case 5:
-                    System.out.println("📌이전 메뉴로 이동합니다.");
+                    System.out.println("\n📌이전 메뉴로 이동합니다.");
                     return;
                 default:
-                    System.out.println("🚫잘못된 선택입니다.");
+                    System.out.println("\n🚫잘못된 선택입니다.");
             }
         }
     }
@@ -79,14 +79,15 @@ public class BookController {
     private boolean searchBooks() {
         System.out.println("\n------     도서 검색     ------");
         System.out.println("🔎      검색할 도서 제목      🔎");
+        System.out.println("(     전체 도서 검색 : Enter     )");
         System.out.print(">> ");
-        String title = setStr();
+        String title = scanner.nextLine();
 
         List<Book> books = bookService.searchBookByTitle(title);
 
         // 리턴 받은 book.getBookAuthorNo() 번호로 작가 이름 리턴
         if(books.isEmpty()) {
-            System.out.println("🚫검색 결과가 없습니다.");
+            System.out.println("\n🚫검색 결과가 없습니다.");
             return false;
         } else {
             printTableHeader();
@@ -112,7 +113,7 @@ public class BookController {
 
     private void printTableHeader() {
         System.out.printf("\n+---------+-------------------------------+--------+----------+-----------+---------+%n");
-        System.out.printf("| 도서 번호 | 제목                        | 저자     | 출판사     | 카테고리     | 대출여부  |%n");
+        System.out.printf("| 도서 번호 | 제목                          | 저자     | 출판사     | 카테고리     | 대출여부  |%n");
         System.out.printf("+---------+-------------------------------+--------+----------+-----------+---------+%n");
     }
 
@@ -284,7 +285,7 @@ public class BookController {
         while (isRunning) {
 
             System.out.println("\n------     도서 검색     ------");
-            System.out.println("🔎      검색할 도서 제목      🔎");
+            System.out.println("🔎      검색할 도서 기준      🔎");
             System.out.println("[1] 도서명으로 검색");
             System.out.println("[2] 저자로 검색");
             System.out.println("[3] 출판사로 검색");
@@ -294,7 +295,9 @@ public class BookController {
             try{
                 switch (choice) {
                     case 1:
-                        System.out.println("\n도서명 검색");
+                        System.out.println("\n------     도서 검색     ------");
+                        System.out.println("🔎      검색할 도서 제목      🔎");
+                        System.out.println("도서명 검색(전체 검색 : Enter)");
                         System.out.print(">> ");
                         String bookTitle = scanner.nextLine();
 
@@ -303,7 +306,9 @@ public class BookController {
                         showBookListUser(bookGroupeds);
                         break;
                     case 2:
-                        System.out.println("\n저자 검색");
+                        System.out.println("\n------     도서 검색     ------");
+                        System.out.println("🔎      검색할 도서 저자      🔎");
+                        System.out.println("저자 검색(전체 검색 : Enter)");
                         System.out.print(">> ");
                         String authorName = scanner.nextLine();
 
@@ -312,7 +317,9 @@ public class BookController {
                         showBookListUser(bookGroupedByAuthor);
                         break;
                     case 3:
-                        System.out.println("\n출판사 검색");
+                        System.out.println("\n------     도서 검색     ------");
+                        System.out.println("🔎      검색할 도서 출판      🔎");
+                        System.out.println("출판사 검색(전체 검색 : Enter)");
                         System.out.print(">> ");
                         String pubName = scanner.nextLine();
 
@@ -346,15 +353,16 @@ public class BookController {
             System.out.println("\n🚫해당 책은 없습니다.");
         }
         else{
-            System.out.printf("\n+----------------------------------------+----------+---------------+---------------+----------+-----+%n");
-            System.out.printf("|%-40s|%-10s|%-15s|%-15s|%-10s|%-5s|\n","책명", "작가", "대분류","소분류", "출판사", "권수");
+            System.out.printf("\n+------------------------------------+------------+--------------+-------------+--------------+--------+%n");
+            System.out.printf("| %-32s  | %-9s | %-10s  | %-10s | %-10s | %-5s |\n", "책명", "작가", "대분류", "소분류", "출판사", "권수");
+            System.out.printf("+------------------------------------+------------+--------------+-------------+--------------+--------+%n");
             //책정보가지고 출력하는 함수들 호출
             for(BookGrouped b: bg){
                 TupleKNY<String,String> categoriesName =
                 categoryService.getHierarchyCategory(categoryService.getCategoryByName(b.getCategoryName()));
                 String bigCateName = categoriesName.getKey();
                 String smallCateName = categoriesName.getValue();
-                System.out.printf("|%-40s|%-10s|%-15s|%-15s|%-10s|%5d\n",
+                System.out.printf("| %-32s | %-9s | %-10s | %-12s | %-10s | %5d |\n",
                         b.getBookTitle(),
                         formatString(b.getAuthorName(), 10),
                         formatString(bigCateName, 15),
@@ -363,7 +371,7 @@ public class BookController {
                         b.getCnt()
                 );
             }
-            System.out.printf("+----------------------------------------+----------+---------------+---------------+----------+-----+%n");
+            System.out.printf("+------------------------------------+------------+--------------+-------------+--------------+--------+%n");
         }
     }
     //숫자 입력 안전 장치

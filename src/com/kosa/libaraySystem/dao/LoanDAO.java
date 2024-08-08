@@ -27,11 +27,7 @@ public class LoanDAO {
             ps.setDate(3, sqlDate);
             ps.setDate(4, null);
 
-            int i = ps.executeUpdate();
-
-            if(i>0){
-                System.out.printf("\n==== %s 대출 완료 =====\n", book.getTitle());
-            }
+            ps.executeUpdate();
         }
     }
 

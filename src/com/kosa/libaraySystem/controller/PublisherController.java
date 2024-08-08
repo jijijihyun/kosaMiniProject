@@ -167,9 +167,12 @@ public class PublisherController {
             return;
         }
 
-        publisherService.deletByPublisher(pno);
-        System.out.println("\n📌출판사가 삭제되었습니다.");
-
+        try {
+            publisherService.deletByPublisher(pno);
+            System.out.println("\n📌출판사가 삭제되었습니다.");
+        }catch (SQLException e){
+            System.out.println("\n🚫해당 출판사의 도서는 대출중입니다. 반납 후, 도서를 먼저 삭제해주세요.");
+        }
     }
 
     private void publisherSelect() {

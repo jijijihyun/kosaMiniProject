@@ -58,10 +58,12 @@ public class CategoryServiceImpl implements CategoryService {
         Integer parentNo = null;
 
         if(parentName != null && !parentName.isEmpty()) {
+            // 상위 카테고리명이 존재하는지 유효성 검사
             if(!categoryDAO.categoryNameCheck(parentName)) {
                 throw new IllegalArgumentException("상위 카테고리가 존재하지 않습니다.");
             }
 
+            // 카테고리명으로 카테고리 번호를 가져온다.
             parentNo = categoryDAO.getCategoryNoByName(parentName);
         }
 

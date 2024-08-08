@@ -15,8 +15,10 @@ public interface CategoryService {
     public TupleKNY<String, String> getHierarchyCategory(Category c);
 
     // =========================================================================
+    // 전체 카테고리 검색(재귀적 CTE를 사용하여 계층적 구조를 보여준다.)
     List<Category> getCategoryHierarchy() throws SQLException;
 
+    // 카테고리 추가
     void addCategory(String parentName, String name) throws SQLException;
 
     void updateCategory(Integer categoryNo, String newParentName, String newName) throws SQLException;
