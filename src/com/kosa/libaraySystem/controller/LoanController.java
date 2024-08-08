@@ -133,9 +133,9 @@ public class LoanController {
             Book b = bookService.readDataByBookNum(userChoice);
             loanService.updateReturnDateByBookNo(b.getBookNo(), user.getUserNo());
             loanService.updateStatusBookByBook(b, "대출가능");
-            System.out.println("📌반납 완료");
+            System.out.println("📌반납이 완료되었습니다.");
         }catch(SQLException e){
-            System.out.println("🚫유효한 입력이 아닙니다");
+            System.out.println("🚫유효한 입력이 아닙니다.");
             return;
         }
     }
@@ -163,7 +163,10 @@ public class LoanController {
 
 
     private void executeLoan(Scanner scanner, User user) throws SQLException {
-        System.out.print(" \uD83D\uDD0D 입력 도서명: ");
+        System.out.println("\n------     도서 대출     ------");
+        System.out.println("🔎      대출할 도서 정보 검색      🔎");
+        System.out.println("검색할 도서명");
+        System.out.print(">> ");
         String bookTitle = scanner.nextLine();
         int stepNum;
         String targetBookTitle = null;
@@ -186,21 +189,19 @@ public class LoanController {
         //같은 도서명으로 리스트 출력 대출가능 정보까지 함께
         if(targetBookTitle == null){
             System.out.println("🚫유효한 입력이 아닙니다.");
-            return;
-        }
-        else{
+        } else{
             stepNum=0;
             List<Book> books = bookService.getBooksSearchTitle(targetBookTitle);
             if(books.isEmpty()){
                 System.out.println("🚫유효한 입력이 아닙니다.");
                 return;
-            }
-            else{
+            } else{
                 System.out.println(" ✅ 다음 중 대출하고자 하는 도서의 번호를 골라주세요. ");
                 showRealBookList(books);
                 stepNum = scanner.nextInt();
                 scanner.nextLine();  // 개행 문자 소비
             }
+
             if(books.get(stepNum-1).getStatus().equals("대출중")){
                 System.out.println("📌해당 도서는 대출이 불가합니다.");
             }

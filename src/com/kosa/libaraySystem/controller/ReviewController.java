@@ -40,7 +40,8 @@ public class ReviewController {
             System.out.println("\n------     리뷰 작성     ------");
             System.out.println("[1] 리뷰 작성");
             System.out.println("[2] 리뷰 조회");
-            System.out.println("[3] 둬로가기");
+            System.out.println("[3] 뒤로가기");
+            System.out.print(">> ");
             int choice = user.safeGetIntInput();
 
             switch (choice) {
@@ -167,7 +168,7 @@ public class ReviewController {
     }
 
     private void showReviewConsole(List<Review> reviews, String bookTitle) throws Exception{
-        System.out.printf("\n ------     %s 의 리뷰 리스트     ------\n", bookTitle);
+        System.out.printf("\n------     %s 의 리뷰 리스트     ------\n", bookTitle);
 
         for(Review r : reviews){
             System.out.printf("\n%s: %-10s  %s: %-10s  %s: %-10s  %s: %-10s\n",
